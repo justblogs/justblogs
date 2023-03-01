@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+    <title type="text">nØthing</title>
+    <subtitle type="html">{Ø}&#39;s Blog</subtitle>
+    <updated>2023-03-01T17:51:30&#43;08:00</updated>
+    <id>https://ghoooooost.com/</id>
+    <link rel="alternate" type="text/html" href="https://ghoooooost.com/" />
+    <link rel="self" type="application/atom&#43;xml" href="https://ghoooooost.com/atom.xml" />
+    <author>
+            <name>{Ø}</name>
+            <uri>https://ghoooooost.com/</uri>
+            
+                <email>cghoooooost7@gmail.com</email>
+            </author>
+    <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
+    <generator uri="https://gohugo.io/" version="0.110.0">Hugo</generator>
+        <entry>
+            <title type="text">LaTeX 笔记</title>
+            <link rel="alternate" type="text/html" href="https://ghoooooost.com/posts/2_latex/" />
+            <id>https://ghoooooost.com/posts/2_latex/</id>
+            <updated>2023-03-01T14:02:57&#43;08:00</updated>
+            <published>2022-05-23T14:25:32&#43;08:00</published>
+            <author>
+                    <name>{Ø}</name>
+                    <uri>https://ghoooooost.com/</uri>
+                    <email>cghoooooost7@gmail.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">LaTeX 基本语法 使用 $...$ 或者 $$...$$ 渲染数学表达式 示例……</summary>
+            
+                <content type="html">&lt;h1 id=&#34;latex&#34;&gt;LaTeX&lt;/h1&gt;
+&lt;h2 id=&#34;基本语法&#34;&gt;基本语法&lt;/h2&gt;
+&lt;p&gt;使用 &lt;code&gt;$...$&lt;/code&gt; 或者 &lt;code&gt;$$...$$&lt;/code&gt; 渲染数学表达式&lt;/p&gt;
+&lt;h2 id=&#34;示例&#34;&gt;示例&lt;/h2&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$$
+f(x) = sin(x) + 12
+$$
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;$$
+f(x) = sin(x) + 12
+$$&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$$
+\sum_{i=1}^n a_i^T b_i
+$$
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;$$
+\sum_{i=1}^n a_i^T b_i
+$$&lt;/p&gt;
+&lt;h2 id=&#34;符号&#34;&gt;符号&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;符号&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;语法&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\varnothing$ -- $\emptyset$&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\varnothing -- \emptyset&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;希腊字母&#34;&gt;希腊字母&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;符号&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;语法&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\alpha$ -- A&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\alpha -- A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\beta$ -- B&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\beta -- B&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\gamma$ -- $\Gamma$&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\gamma -- \Gamma&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\delta$ -- $\Delta$&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\delta -- \Delta&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\epsilon$ -- $\varepsilon$ -- E&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\epsilon -- \varepsilon -- E&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\eta$ -- H&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\eta -- H&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\theta$ -- $\vartheta$ -- $\Theta$&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\theta -- \vartheta -- \Theta&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\omega$ -- $\Omega$&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\omega -- \Omega&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\kappa$ -- K&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\kappa -- K&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\lambda$ -- $\Lambda$&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\lambda -- \Lambda&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\mu$ -- M&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\mu -- M&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\mu$ -- N&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\mu -- N&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\xi$ -- $\Xi$&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\xi -- \Xi&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\pi$ -- $\Pi$&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\pi -- \Pi&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\rho$ -- $\varrho$ -- P&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\rho -- \varrho -- P&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\sigma$ -- $\Sigma$&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\sigma -- \Sigma&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\tau$ -- T&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\tau -- T&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\upsilon$ -- $\Upsilon$&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\upsilon -- \Upsilon&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\phi$ -- $\varphi$ -- $\Phi$&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\phi -- \varphi -- \Phi&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\chi$ -- X&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\chi -- X&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\psi$ -- $\Psi$&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\psi -- \Psi&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;$\iota$&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;\iota -- \Iota&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;o -- O&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;o -- O&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;大写基本都能通过大写命令首字母实现&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;pic&#34;&gt;Pic&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://ghoooooost.com/pic/2/2018041621294865.png&#34; alt=&#34;2018041621294865&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ghoooooost.com/pic/2/20180416213036844.png&#34; alt=&#34;20180416213036844&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ghoooooost.com/pic/2/20180416213119987.png&#34; alt=&#34;20180416213119987&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ghoooooost.com/pic/2/20180416213126857.png&#34; alt=&#34;qs&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;常用格式&#34;&gt;常用格式&lt;/h2&gt;
+&lt;h3 id=&#34;lim-下面的两行&#34;&gt;lim 下面的两行&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$$
+\lim_{{x \rightarrow x_0} \atop {y \rightarrow y_0}} f(x, y) = A
+$$
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;$$
+\lim_{{x \rightarrow x_0} \atop {y \rightarrow y_0}} f(x, y) = A
+$$&lt;/p&gt;
+&lt;h3 id=&#34;区块分行排版&#34;&gt;区块分行排版&lt;/h3&gt;
+&lt;p&gt;align: 两侧对齐&lt;/p&gt;
+&lt;p&gt;gather: 居中对齐&lt;/p&gt;
+&lt;p&gt;array{lcl}: 左对齐&lt;/p&gt;
+&lt;p&gt;array{lcr}: 右对齐&lt;/p&gt;
+&lt;p&gt;&amp;amp;: 指定位置对齐&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$$
+\begin{align*}
+&amp;amp; 第一行 \\
+第 &amp;amp;二行 \\
+第三 &amp;amp;行
+\end{align*}
+$$
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;$$
+\begin{align*}
+&amp;amp; 第一行 \
+第 &amp;amp;二行 \
+第三 &amp;amp;行
+\end{align*}
+$$&lt;/p&gt;
+&lt;h3 id=&#34;积分区域放到积分符号正下方&#34;&gt;积分区域放到积分符号正下方&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$$
+\iint \limits_D
+$$
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;$$
+\iint \limits_D
+$$&lt;/p&gt;
+&lt;h3 id=&#34;大括号&#34;&gt;大括号&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$$
+\left\{
+\begin{array}.
+F(x, y, z) = 0 \\
+G(x, y, z) = 0
+\end{array}
+\right.
+$$
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;$$
+\left{
+\begin{array}.
+F(x, y, z) = 0 \
+G(x, y, z) = 0
+\end{array}
+\right.
+$$&lt;/p&gt;
+&lt;h3 id=&#34;弧&#34;&gt;弧&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$$
+\overset{\LARGE{\frown}}{AB}
+$$
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;$$
+\overset{\LARGE{\frown}}{AB}
+$$&lt;/p&gt;
+&lt;h3 id=&#34;三角矩阵&#34;&gt;三角矩阵&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;\begin{equation*}
+\left[
+\begin{array}{cccc}	
+a_{11} &amp;amp; a_{12} &amp;amp; \cdots &amp;amp; a_{1n} \\	
+&amp;amp;a_{22} &amp;amp; \cdots &amp;amp;a_{2n} \\	
+&amp;amp; &amp;amp; \ddots &amp;amp; \vdots \\	
+&amp;amp;
+&amp;amp; &amp;amp;a_{nn}	
+\end{array}\right]
+\end{equation*}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;$$
+\begin{equation*}
+\left[
+\begin{array}{cccc}
+a_{11} &amp;amp; a_{12} &amp;amp; \cdots &amp;amp; a_{1n} \
+&amp;amp;a_{22} &amp;amp; \cdots &amp;amp;a_{2n} \
+&amp;amp; &amp;amp; \ddots &amp;amp; \vdots \
+&amp;amp;
+&amp;amp; &amp;amp;a_{nn}
+\end{array}\right]
+\end{equation*}
+$$&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;\begin{equation*}
+\left[
+\begin{array}{cccc}	
+a_{11}\\	
+a_{21} &amp;amp;a_{22} \\	
+\vdots &amp;amp;\vdots &amp;amp; \ddots &amp;amp; \vdots \\ 
+a_{n1}&amp;amp; a_{n2}
+&amp;amp; &amp;amp;a_{nn}	
+\end{array}\right]
+\end{equation*}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;$$
+\begin{equation*}
+\left[
+\begin{array}{cccc}
+a_{11}\
+a_{21} &amp;amp;a_{22} \
+\vdots &amp;amp;\vdots &amp;amp; \ddots &amp;amp; \vdots \
+a_{n1}&amp;amp; a_{n2}
+&amp;amp; &amp;amp;a_{nn}
+\end{array}\right]
+\end{equation*}
+$$&lt;/p&gt;
+&lt;h3 id=&#34;行列式&#34;&gt;行列式&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;\left |
+\begin{array}.
+a_{11} &amp;amp; a_{12} &amp;amp; \cdots &amp;amp; a_{1,n-1} &amp;amp; a_{1n}
+\\
+a_{21} &amp;amp; a_{22} &amp;amp; \cdots &amp;amp; a_{2,n-1} &amp;amp; 0
+\\
+\vdots &amp;amp; \vdots &amp;amp; &amp;amp; \vdots &amp;amp; \vdots 
+\\
+a_{n1} &amp;amp; 0 &amp;amp; \cdots &amp;amp; 0 &amp;amp; 0
+\end{array}
+\right |
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;$$
+\left |
+\begin{array}.
+a_{11} &amp;amp; a_{12} &amp;amp; \cdots &amp;amp; a_{1,n-1} &amp;amp; a_{1n}
+\
+a_{21} &amp;amp; a_{22} &amp;amp; \cdots &amp;amp; a_{2,n-1} &amp;amp; 0
+\
+\vdots &amp;amp; \vdots &amp;amp; &amp;amp; \vdots &amp;amp; \vdots
+\
+a_{n1} &amp;amp; 0 &amp;amp; \cdots &amp;amp; 0 &amp;amp; 0&lt;/p&gt;
+&lt;p&gt;\end{array}
+\right |
+$$&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;\begin{vmatrix}
+x &amp;amp; y \\  z &amp;amp; v  
+\end{vmatrix}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;$$
+\begin{vmatrix}  x &amp;amp; y \  z &amp;amp; v  \end{vmatrix}
+$$&lt;/p&gt;
+&lt;h3 id=&#34;矩阵&#34;&gt;矩阵&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;\left [
+\begin{array}.
+a_{11} &amp;amp; a_{12} &amp;amp; \cdots &amp;amp; a_{1n} \\
+a_{21} &amp;amp; a_{22} &amp;amp; \cdots &amp;amp; a_{2n} \\
+\vdots &amp;amp; \vdots &amp;amp;  &amp;amp; \vdots \\
+a_{m1} &amp;amp; a_{m2} &amp;amp; \cdots &amp;amp; a_{mn} \\
+\end{array}
+\right ]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;$$
+\left [
+\begin{array}.
+a_{11} &amp;amp; a_{12} &amp;amp; \cdots &amp;amp; a_{1n} \
+a_{21} &amp;amp; a_{22} &amp;amp; \cdots &amp;amp; a_{2n} \
+\vdots &amp;amp; \vdots &amp;amp;  &amp;amp; \vdots \
+a_{m1} &amp;amp; a_{m2} &amp;amp; \cdots &amp;amp; a_{mn} \
+\end{array}
+\right ]
+$$&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;\begin{bmatrix}
+0 &amp;amp; \cdots &amp;amp; 0 \\  \vdots &amp;amp; \ddots &amp;amp; \vdots \\ 0 &amp;amp; \cdots &amp;amp; 0  
+\end{bmatrix}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;$$
+\begin{bmatrix}  0 &amp;amp; \cdots &amp;amp; 0 \  \vdots &amp;amp; \ddots &amp;amp; \vdots \ 0 &amp;amp; \cdots &amp;amp; 0  \end{bmatrix}
+$$&lt;/p&gt;
+&lt;h3 id=&#34;颜色&#34;&gt;颜色&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;{\color{green}颜色测试}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;$$
+{\color{green}颜色测试}
+$$&lt;/p&gt;
+&lt;h3 id=&#34;带文字的右箭头&#34;&gt;带文字的右箭头&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;\xrightarrow[down]{up}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;$$
+\xrightarrow[down]{up}
+$$&lt;/p&gt;
+&lt;h3 id=&#34;文本加粗&#34;&gt;文本加粗&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;\textbf{线性表出}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;$$
+\textbf{线性表出}
+$$&lt;/p&gt;
+&lt;h3 id=&#34;长等号&#34;&gt;长等号&lt;/h3&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;\xlongequal{up}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;$$
+\xlongequal{up}
+$$&lt;/p&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="https://ghoooooost.com/tags/1/" term="1" label="1" />
+                            
+                        
+                            
+                            
+                            
+                                <category scheme="https://ghoooooost.com/tags/2/" term="2" label="2" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+        <entry>
+            <title type="text">Hello World</title>
+            <link rel="alternate" type="text/html" href="https://ghoooooost.com/posts/1_hello-world/" />
+            <id>https://ghoooooost.com/posts/1_hello-world/</id>
+            <updated>2023-03-01T14:03:02&#43;08:00</updated>
+            <published>1970-01-01T00:00:00&#43;08:00</published>
+            <author>
+                    <name>{Ø}</name>
+                    <uri>https://ghoooooost.com/</uri>
+                    <email>cghoooooost7@gmail.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">false</summary>
+            
+                <content type="html">&lt;h1 id=&#34;第一篇-用于测试的文章&#34;&gt;第一篇 用于测试的文章&lt;/h1&gt;
+&lt;h2 id=&#34;二级标题&#34;&gt;二级标题&lt;/h2&gt;
+&lt;h3 id=&#34;三级标题&#34;&gt;三级标题&lt;/h3&gt;
+&lt;h4 id=&#34;四级标题&#34;&gt;四级标题&lt;/h4&gt;
+&lt;h5 id=&#34;五级标题&#34;&gt;五级标题&lt;/h5&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;代码块测试&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;LateX 支持测试&lt;/strong&gt;
+$$
+\sqrt[114]{514}
+$$
+&lt;em&gt;内联公式测试&lt;/em&gt;   $\iiint \limits_D$&lt;/p&gt;
+&lt;h2 id=&#34;图片测试&#34;&gt;图片测试&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://ghoooooost.com/pic/1/Lenna.jpg&#34; alt=&#34;Lenna&#34;&gt;&lt;/p&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="https://ghoooooost.com/tags/helloworld/" term="HelloWorld" label="HelloWorld" />
+                            
+                        
+                            
+                            
+                            
+                                <category scheme="https://ghoooooost.com/tags/22/" term="22" label="22" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+</feed>
