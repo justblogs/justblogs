@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">nØthing</title>
     <subtitle type="html">{Ø}&#39;s Blog</subtitle>
-    <updated>2023-03-01T21:54:16&#43;08:00</updated>
+    <updated>2023-03-02T12:58:14&#43;08:00</updated>
     <id>https://ghoooooost.com/</id>
     <link rel="alternate" type="text/html" href="https://ghoooooost.com/" />
     <link rel="self" type="application/atom&#43;xml" href="https://ghoooooost.com/atom.xml" />
@@ -15,12 +15,12 @@
                 <email>cghoooooost7@gmail.com</email>
             </author>
     <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
-    <generator uri="https://gohugo.io/" version="0.110.0">Hugo</generator>
+    <generator uri="https://gohugo.io/" version="0.105.0">Hugo</generator>
         <entry>
             <title type="text">基于Hugo的博客搭建</title>
             <link rel="alternate" type="text/html" href="https://ghoooooost.com/posts/3_hugo/" />
             <id>https://ghoooooost.com/posts/3_hugo/</id>
-            <updated>2023-03-01T20:52:10&#43;08:00</updated>
+            <updated>2023-03-01T20:52:12&#43;08:00</updated>
             <published>2023-03-01T20:00:00&#43;08:00</published>
             <author>
                     <name>{Ø}</name>
@@ -531,7 +531,7 @@
             <title type="text">随想 202303</title>
             <link rel="alternate" type="text/html" href="https://ghoooooost.com/posts/%E9%9A%8F%E6%83%B3-202303/" />
             <id>https://ghoooooost.com/posts/%E9%9A%8F%E6%83%B3-202303/</id>
-            <updated>2023-03-01T21:11:17&#43;08:00</updated>
+            <updated>2023-03-01T21:11:18&#43;08:00</updated>
             <published>2023-03-01T00:00:00&#43;08:00</published>
             <author>
                     <name>{Ø}</name>
@@ -578,7 +578,7 @@
             <title type="text">提问的智慧</title>
             <link rel="alternate" type="text/html" href="https://ghoooooost.com/posts/4_%E6%8F%90%E9%97%AE%E7%9A%84%E8%89%BA%E6%9C%AF/" />
             <id>https://ghoooooost.com/posts/4_%E6%8F%90%E9%97%AE%E7%9A%84%E8%89%BA%E6%9C%AF/</id>
-            <updated>2023-03-01T21:06:08&#43;08:00</updated>
+            <updated>2023-03-01T21:06:10&#43;08:00</updated>
             <published>2022-07-26T13:22:00&#43;08:00</published>
             <author>
                     <name>{Ø}</name>
@@ -1092,7 +1092,7 @@ I&#39;ll be glad to translate responses, if you only use one or the other.&lt;/p
             <title type="text">LaTeX</title>
             <link rel="alternate" type="text/html" href="https://ghoooooost.com/posts/2_latex/" />
             <id>https://ghoooooost.com/posts/2_latex/</id>
-            <updated>2023-03-01T21:14:49&#43;08:00</updated>
+            <updated>2023-03-01T21:14:50&#43;08:00</updated>
             <published>2022-05-23T14:25:32&#43;08:00</published>
             <author>
                     <name>{Ø}</name>
@@ -1463,7 +1463,7 @@ $$&lt;/p&gt;
             <title type="text">Hello World</title>
             <link rel="alternate" type="text/html" href="https://ghoooooost.com/posts/1_hello-world/" />
             <id>https://ghoooooost.com/posts/1_hello-world/</id>
-            <updated>2023-03-01T20:38:57&#43;08:00</updated>
+            <updated>2023-03-01T20:38:58&#43;08:00</updated>
             <published>1970-01-01T00:00:00&#43;08:00</published>
             <author>
                     <name>{Ø}</name>
