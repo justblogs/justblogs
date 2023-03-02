@@ -23,7 +23,7 @@
         
             <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
         
-        <lastBuildDate>Thu, 02 Mar 2023 12:58:14 &#43;0800</lastBuildDate>
+        <lastBuildDate>Thu, 02 Mar 2023 14:35:00 &#43;0800</lastBuildDate>
         
             <atom:link rel="self" type="application/rss&#43;xml" href="https://ghoooooost.com/rss.xml" />
         
@@ -160,8 +160,7 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;hugo --theme&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;meme --baseUrl&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;example.com&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;Hugo.assets/image-20221101141136434.png&#34; alt=&#34;image-20221101141136434&#34;&gt;&lt;/p&gt;
-&lt;h3 id=&#34;上传部署&#34;&gt;上传部署&lt;/h3&gt;
+&lt;/div&gt;&lt;h3 id=&#34;上传部署&#34;&gt;上传部署&lt;/h3&gt;
 &lt;p&gt;不出意外的话，&lt;del&gt;要出意外了&lt;/del&gt;，项目根目录会多出 &lt;code&gt;public&lt;/code&gt; 文件夹&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -546,7 +545,7 @@
                 
                 <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
                 
-                    <description>&lt;h2 id=&#34;1&#34;&gt;1&lt;/h2&gt;
+                    <description>&lt;h2 id=&#34;01&#34;&gt;01&lt;/h2&gt;
 &lt;p&gt;总算把博客搭完了，&lt;/p&gt;
 &lt;p&gt;算是第二遍搭建基于 Hugo 的博客了，&lt;/p&gt;
 &lt;p&gt;增长了些许使用 Git 的知识...&lt;/p&gt;
@@ -1486,9 +1485,10 @@ $$&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;hr&gt;
 &lt;h2 id=&#34;latex-支持测试&#34;&gt;LateX 支持测试&lt;/h2&gt;
-&lt;h2 id=&#34;heading&#34;&gt;$$
+&lt;p&gt;$$
 \sqrt[114]{514}
-$$&lt;/h2&gt;
+$$&lt;/p&gt;
+&lt;hr&gt;
 &lt;h2 id=&#34;内联公式测试&#34;&gt;内联公式测试&lt;/h2&gt;
 &lt;p&gt;把  $\iiint \limits_D$ 放在一段文字中&lt;/p&gt;
 &lt;hr&gt;
@@ -1496,9 +1496,74 @@ $$&lt;/h2&gt;
 &lt;p&gt;&lt;em&gt;斜体&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;加粗&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;&lt;strong&gt;斜体加粗&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;del&gt;删除线&lt;/del&gt;&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;图片测试&#34;&gt;图片测试&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://ghoooooost.com/pic/1/Lenna.jpg&#34; alt=&#34;Lenna&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ghoooooost.com/pic/1/Lenna.jpg&#34; alt=&#34;Lenna&#34; title=&#34;Lenna&#34;&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;链接测试&#34;&gt;链接测试&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://ghoooooost.com/about/&#34;&gt;这是一个链接&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;a href=&#34;https://ghoooooost.com/about/&#34;&gt;这是一个链接&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&#34;https://ghoooooost.com/about/&#34;&gt;这是一个链接&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;&lt;a href=&#34;https://ghoooooost.com/about/&#34;&gt;这是一个链接&lt;/a&gt;&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;del&gt;&lt;a href=&#34;https://ghoooooost.com/about/&#34;&gt;这是一个链接&lt;/a&gt;&lt;/del&gt;&lt;/p&gt;
+&lt;h2 id=&#34;列表测试&#34;&gt;列表测试&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;一级列表&lt;/li&gt;
+&lt;li&gt;一级列表
+&lt;ul&gt;
+&lt;li&gt;二级列表&lt;/li&gt;
+&lt;li&gt;二级列表
+&lt;ul&gt;
+&lt;li&gt;三级列表&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;二级列表&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;一级列表&lt;/li&gt;
+&lt;li&gt;一级列表&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li&gt;one&lt;/li&gt;
+&lt;li&gt;two&lt;/li&gt;
+&lt;li&gt;three
+&lt;ol&gt;
+&lt;li&gt;three-one&lt;/li&gt;
+&lt;li&gt;three-two&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;区块测试&#34;&gt;区块测试&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;块&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;块中块&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;块中块中块&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;表格测试&#34;&gt;表格测试&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;1&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;2&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;3&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;who are we&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;where are we from&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;where are we going&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 </description>
                 
                 
