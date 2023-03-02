@@ -2,20 +2,29 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://ghoooooost.com/tags/blog/</loc>
-    <lastmod>2023-03-02T14:03:27+08:00</lastmod>
-  </url><url>
     <loc>https://ghoooooost.com/categories/</loc>
-    <lastmod>2023-03-02T14:34:18+08:00</lastmod>
+    <lastmod>2023-03-02T22:59:41+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/</loc>
-    <lastmod>2023-03-02T14:34:18+08:00</lastmod>
+    <lastmod>2023-03-02T22:59:41+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/posts/</loc>
-    <lastmod>2023-03-02T14:34:18+08:00</lastmod>
+    <lastmod>2023-03-02T22:59:41+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/</loc>
-    <lastmod>2023-03-02T14:34:18+08:00</lastmod>
+    <lastmod>2023-03-02T22:59:41+08:00</lastmod>
+  </url><url>
+    <loc>https://ghoooooost.com/posts/%E6%80%9D%E8%80%83-%E8%B4%B9%E7%B1%B3%E6%82%96%E8%AE%BA/</loc>
+    <lastmod>2023-03-02T22:59:41+08:00</lastmod>
+  </url><url>
+    <loc>https://ghoooooost.com/tags/%E6%80%9D%E8%80%83/</loc>
+    <lastmod>2023-03-02T22:59:41+08:00</lastmod>
+  </url><url>
+    <loc>https://ghoooooost.com/categories/%E6%80%9D%E8%80%83/</loc>
+    <lastmod>2023-03-02T22:59:41+08:00</lastmod>
+  </url><url>
+    <loc>https://ghoooooost.com/tags/blog/</loc>
+    <lastmod>2023-03-02T14:03:27+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/posts/3_hugo/</loc>
     <lastmod>2023-03-02T14:03:27+08:00</lastmod>
@@ -27,13 +36,13 @@
     <lastmod>2023-03-02T14:03:27+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/%E9%9A%8F%E6%83%B3/</loc>
-    <lastmod>2023-03-02T14:09:27+08:00</lastmod>
+    <lastmod>2023-03-02T21:06:49+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/categories/%E9%9A%8F%E6%83%B3/</loc>
-    <lastmod>2023-03-02T14:09:27+08:00</lastmod>
+    <lastmod>2023-03-02T21:06:49+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/posts/%E9%9A%8F%E6%83%B3-202303/</loc>
-    <lastmod>2023-03-02T14:09:27+08:00</lastmod>
+    <lastmod>2023-03-02T21:06:49+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/about/</loc>
     <lastmod>2023-03-01T20:38:02+08:00</lastmod>
