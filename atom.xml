@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">nØthing</title>
     <subtitle type="html">{Ø}&#39;s Blog</subtitle>
-    <updated>2023-03-02T23:01:21&#43;08:00</updated>
+    <updated>2023-03-03T22:40:37&#43;08:00</updated>
     <id>https://ghoooooost.com/</id>
     <link rel="alternate" type="text/html" href="https://ghoooooost.com/" />
     <link rel="self" type="application/atom&#43;xml" href="https://ghoooooost.com/atom.xml" />
@@ -16,6 +16,131 @@
             </author>
     <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
     <generator uri="https://gohugo.io/" version="0.105.0">Hugo</generator>
+        <entry>
+            <title type="text">行星撞击</title>
+            <link rel="alternate" type="text/html" href="https://ghoooooost.com/posts/%E6%80%9D%E8%80%83-%E8%A1%8C%E6%98%9F%E6%92%9E%E5%87%BB/" />
+            <id>https://ghoooooost.com/posts/%E6%80%9D%E8%80%83-%E8%A1%8C%E6%98%9F%E6%92%9E%E5%87%BB/</id>
+            <updated>2023-03-03T22:39:29&#43;08:00</updated>
+            <published>2023-03-03T22:02:00&#43;08:00</published>
+            <author>
+                    <name>{Ø}</name>
+                    <uri>https://ghoooooost.com/</uri>
+                    <email>cghoooooost7@gmail.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">撞击事件 指地球或其他行星和小行星、彗星等……</summary>
+            
+                <content type="html">&lt;h2 id=&#34;撞击事件&#34;&gt;撞击事件&lt;/h2&gt;
+&lt;p&gt;指地球或其他行星和小行星、彗星等其他天体互相碰撞的事件&lt;/p&gt;
+&lt;h2 id=&#34;撞击体积及频率&#34;&gt;撞击体积及频率&lt;/h2&gt;
+&lt;p&gt;许多小天体经常和地球相撞。天体的体积和撞击地球的频率关系是逆相关。&lt;/p&gt;
+&lt;h3 id=&#34;5000m&#34;&gt;5000m&lt;/h3&gt;
+&lt;p&gt;较大物体的撞击，例如直径5公里的天体平均大约每一千万年撞击地球一次。最近一次直径10公里以上撞击地球的天体是6500万年前造成白垩纪-第三纪灭绝事件的天体。&lt;/p&gt;
+&lt;h3 id=&#34;1000m&#34;&gt;1000m&lt;/h3&gt;
+&lt;p&gt;直径约1公里的小行星平均50万年撞击地球一次。&lt;/p&gt;
+&lt;p&gt;目前我们已知有一个直径超过1公里的小行星，(29075) 1950 DA可能在2880年3月16日撞击地球，但是杜林危险指数只估计未来一百年内可能撞击地球的物体，因此对该天体并不适用。&lt;/p&gt;
+&lt;h3 id=&#34;50m&#34;&gt;50m&lt;/h3&gt;
+&lt;p&gt;直径约50米的小行星平均一千年撞击地球一次，产生的爆炸相当于1908年通古斯大爆炸的能量。&lt;/p&gt;
+&lt;h3 id=&#34;10m&#34;&gt;10m&lt;/h3&gt;
+&lt;p&gt;直径5到10米的小行星平均一年进入地球大气层一次，释放能量约1万5000吨黄色炸药当量，相当于在广岛爆炸的小男孩原子弹。这些侵入的物体一般会在中间层爆炸，且大部分会被气化。&lt;/p&gt;
+&lt;p&gt;直径小于10米的天体被称为流星体，如果落到地球表面则称为陨石。一般预测每年有约500个陨石落到地球表面。但只有约5到6个可被发现并由科学家研究。&lt;/p&gt;
+&lt;h2 id=&#34;巴勒莫撞击危险指数&#34;&gt;巴勒莫撞击危险指数&lt;/h2&gt;
+&lt;h3 id=&#34;概述&#34;&gt;概述&lt;/h3&gt;
+&lt;p&gt;是天文学家用来评估近地天体（NEO）潜在撞击地球危险几率的对数尺度。&lt;/p&gt;
+&lt;p&gt;它结合了撞击的概率和产生的动能效果这两种类型的资料，估计出单一的危险值。&lt;/p&gt;
+&lt;p&gt;它的额定值&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从0，意味着危险与背景危险一样（定义为相同大小或更大的天体从过去的日期到再发生撞击所构成的风险平均年数的数值）。&lt;/li&gt;
+&lt;li&gt;+2的数值显示增加大于随机背景风险的100倍。&lt;/li&gt;
+&lt;li&gt;结果小于-2的数值反映出事件可能不存在。&lt;/li&gt;
+&lt;li&gt;当巴勒莫撞击危险指数介于-2和0之间，则表明是必须小心监视的情况。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;公式&#34;&gt;公式&lt;/h3&gt;
+&lt;p&gt;这个尺度对照于相同大小或更大尺度天体再度发生撞击的潜在风险年数。随机撞击的平均风险称为背景风险。巴勒莫撞击危险指数值以&amp;quot;p&amp;quot;表示&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;定义的公式为：&lt;/strong&gt;
+$$
+P = \log_{10} {p_i \over f_B T}
+$$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$p_i$ 是撞击的几率&lt;/li&gt;
+&lt;li&gt;$T$ 是 &amp;quot;$p_i$&amp;quot; 被考虑的时间间隔&lt;/li&gt;
+&lt;li&gt;$f_B$ 是背景撞击的频率&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;定义的背景撞击频率是：&lt;/strong&gt;
+$$
+f_B = {3 \over 100} E^{-{4\over5}}yr^{-1}
+$$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;能量界限 $E$ 是百万吨&lt;/li&gt;
+&lt;li&gt;$yr$ 是以年为单位的时间数值&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;都灵危险指数&#34;&gt;都灵危险指数&lt;/h2&gt;
+&lt;h3 id=&#34;概述-1&#34;&gt;概述&lt;/h3&gt;
+&lt;p&gt;是一套用作衡量近地天体撞击地球的指标，包括小行星和彗星。&lt;/p&gt;
+&lt;p&gt;通常会给天文学家和公众透过整合撞击机会率和破坏力成一个数值，来评估其天体撞击地球的严重性。&lt;/p&gt;
+&lt;p&gt;都灵危险指数使用介乎0至10之间的整数数值，当中“0”代表其撞击地球的机会微乎其微，又或是在撞击地球前会给其大气层摩擦燃烧殆尽；而“10”则代表该物体撞击地球的机会十分大，并足以造成全球性大灾难。&lt;/p&gt;
+&lt;p&gt;近地天体会按照其撞击地球的机会率及动能，给予一个0至10之间的数值，而能量则以“MT”，即百万吨TNT炸药作单位。在二战结束前，美军向广岛投掷“小男孩”原子弹，其威力相等于0.013MT，因此1MT相等于77个广岛原子弹的威力。&lt;/p&gt;
+&lt;h3 id=&#34;现有评级&#34;&gt;现有评级&lt;/h3&gt;
+&lt;p&gt;该指数也用了白、绿、黄、橙、红五种颜色去代表不同的级数。&lt;/p&gt;
+&lt;h4 id=&#34;白色无危险&#34;&gt;白色：无危险&lt;/h4&gt;
+&lt;ol start=&#34;0&#34;&gt;
+&lt;li&gt;该天体撞击地球的机会率是零，或者撞击的危险微乎其微，可以当作为零。也会用于在撞及地球前烧毁的天体，如流星群，或者是间中落地，极少引起破坏的小陨石。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;绿色正常&#34;&gt;绿色：正常&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;天文学家例行地发现近地天体，并预测该天体不会对地球构成不寻常的危险。现行的计算显示，撞击的机会极度低，并不需要引起公众的注意或关注。在绝大多数情况下，进一步的望远镜观测会将危险指数再评为零级。
+黄色：需要天文学家注意&lt;/li&gt;
+&lt;li&gt;发现近地物体（随着进一步的搜寻，类似的发现可能会越来越多），而该物体会接近地球，但不会异常地过于接近。虽然有关发现需要天文学家的注意，但由于撞击的可能性非常低，因此并不需要引起公众的注意或关注。在绝大多数情况下，进一步的望远镜观测会将危险指数再评为零级。&lt;/li&gt;
+&lt;li&gt;发现近地物体，需要天文学家注意。现行计算显示会有1%或以上的可能性造成小范围的冲撞损毁。在绝大多数情况下，进一步的望远镜观测会将危险指数再评为零级。如果该天体10年内会靠近地球，应通知公众和有关部门。&lt;/li&gt;
+&lt;li&gt;发现近地物体，需要天文学家注意。现行计算显示会有1%或以上的可能性造成区域性的冲撞损毁。在绝大多数情况下，进一步的望远镜观测会将危险指数再评为零级。如果该天体10年内会靠近地球，应通知公众和有关部门。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;橙色威胁&#34;&gt;橙色：威胁&lt;/h4&gt;
+&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;有近地物体接近，可能会带来区域性的严重破坏，但未能确定是否必然发生。天文学家需要极度关注，并判断是否会发生撞击。如果该天体10年内可能撞击地球，各国政府可被授权采取紧急应对计划。&lt;/li&gt;
+&lt;li&gt;有大型近地物体接近，可能会带来全球性的灾难性破坏，但未能确定是否必然发生。天文学家需要极度关注，并判断是否会发生撞击。如果该天体30年内可能撞击地球，各国政府可被授权采取紧急应对计划。&lt;/li&gt;
+&lt;li&gt;有大型近地物体非常地接近地球，在一世纪内可能会带来前所未有的全球灾难，但未能确定是否必然发生。如果该威胁出现在未来一世纪内，国际的紧急应对计划将会被授权，特别是利用重点观测尽快获得令人信服的证据，确定撞击是否会发生。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;红色肯定发生撞击&#34;&gt;红色：肯定发生撞击&lt;/h4&gt;
+&lt;ol start=&#34;8&#34;&gt;
+&lt;li&gt;天体撞击将会发生，若撞击在陆地发生，将会对局部地区造成毁坏；若物体撞落近岸地区，可能会引发海啸。此等撞击平均每隔50至数千年发生一次。&lt;/li&gt;
+&lt;li&gt;天体撞击将会发生，若撞击在陆地发生，将会对大面积地区造成毁坏；若撞落海洋，可能会引发大海啸。此等撞击平均每隔1万至10万年发生一次。&lt;/li&gt;
+&lt;li&gt;天体撞击将会发生，无论撞及陆地或海洋，均会造成全球气候大灾难，并会威胁现有文明的未来。此等撞击平均每十万年或以上发生一次。&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="https://ghoooooost.com/categories/%E6%80%9D%E8%80%83/" term="思考" label="思考" />
+                            
+                        
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="https://ghoooooost.com/tags/%E6%80%9D%E8%80%83/" term="思考" label="思考" />
+                            
+                        
+                            
+                            
+                            
+                                <category scheme="https://ghoooooost.com/tags/%E5%AE%87%E5%AE%99/" term="宇宙" label="宇宙" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
         <entry>
             <title type="text">关于费米悖论</title>
             <link rel="alternate" type="text/html" href="https://ghoooooost.com/posts/%E6%80%9D%E8%80%83-%E8%B4%B9%E7%B1%B3%E6%82%96%E8%AE%BA/" />
