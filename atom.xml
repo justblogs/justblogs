@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">nØthing</title>
     <subtitle type="html">{Ø}&#39;s Blog</subtitle>
-    <updated>2023-03-12T21:52:07&#43;08:00</updated>
+    <updated>2023-03-13T19:44:56&#43;08:00</updated>
     <id>https://ghoooooost.com/</id>
     <link rel="alternate" type="text/html" href="https://ghoooooost.com/" />
     <link rel="self" type="application/atom&#43;xml" href="https://ghoooooost.com/atom.xml" />
@@ -15,7 +15,60 @@
                 <email>cghoooooost7@gmail.com</email>
             </author>
     <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
-    <generator uri="https://gohugo.io/" version="0.110.0">Hugo</generator>
+    <generator uri="https://gohugo.io/" version="0.105.0">Hugo</generator>
+        <entry>
+            <title type="text">游戏</title>
+            <link rel="alternate" type="text/html" href="https://ghoooooost.com/posts/other-game/" />
+            <id>https://ghoooooost.com/posts/other-game/</id>
+            <updated>2023-03-13T19:44:06&#43;08:00</updated>
+            <published>2023-03-13T19:34:00&#43;08:00</published>
+            <author>
+                    <name>{Ø}</name>
+                    <uri>https://ghoooooost.com/</uri>
+                    <email>cghoooooost7@gmail.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">CS:GO 灵敏度设定 1920x1080下: 1400 x 2.00……</summary>
+            
+                <content type="html">&lt;h2 id=&#34;csgo&#34;&gt;CS:GO&lt;/h2&gt;
+&lt;h3 id=&#34;灵敏度设定&#34;&gt;灵敏度设定&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;1920x1080下&lt;/strong&gt;: &lt;code&gt;1400&lt;/code&gt; x &lt;code&gt;2.00&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3840x2160下&lt;/strong&gt;: &lt;code&gt;2500&lt;/code&gt; x &lt;code&gt;1.20&lt;/code&gt;&lt;/p&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="https://ghoooooost.com/categories/%E5%85%B6%E4%BB%96/" term="其他" label="其他" />
+                            
+                        
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="https://ghoooooost.com/tags/%E5%85%B6%E4%BB%96/" term="其他" label="其他" />
+                            
+                        
+                            
+                            
+                            
+                                <category scheme="https://ghoooooost.com/tags/%E6%B8%B8%E6%88%8F/" term="游戏" label="游戏" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
         <entry>
             <title type="text">异形系列</title>
             <link rel="alternate" type="text/html" href="https://ghoooooost.com/posts/film-alien/" />
@@ -1291,7 +1344,7 @@ $$&lt;/p&gt;
             <title type="text">随想 202303</title>
             <link rel="alternate" type="text/html" href="https://ghoooooost.com/posts/reflection-202303/" />
             <id>https://ghoooooost.com/posts/reflection-202303/</id>
-            <updated>2023-03-10T21:45:54&#43;08:00</updated>
+            <updated>2023-03-10T21:45:56&#43;08:00</updated>
             <published>2023-03-01T00:00:00&#43;08:00</published>
             <author>
                     <name>{Ø}</name>
@@ -2232,8 +2285,8 @@ $$&lt;/p&gt;
     
         <entry>
             <title type="text">Hello World</title>
-            <link rel="alternate" type="text/html" href="https://ghoooooost.com/posts/technique-hello-world/" />
-            <id>https://ghoooooost.com/posts/technique-hello-world/</id>
+            <link rel="alternate" type="text/html" href="https://ghoooooost.com/posts/technique-hello_world/" />
+            <id>https://ghoooooost.com/posts/technique-hello_world/</id>
             <updated>2023-03-02T14:34:18&#43;08:00</updated>
             <published>1970-01-01T00:00:00&#43;08:00</published>
             <author>

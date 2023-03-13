@@ -10,7 +10,7 @@
         <title>nØthing</title>
         <link>https://ghoooooost.com/</link>
         <description>{Ø}&#39;s Blog</description>
-        <generator>Hugo 0.110.0 https://gohugo.io/</generator>
+        <generator>Hugo 0.105.0 https://gohugo.io/</generator>
         
             <language>zh-CN</language>
         
@@ -23,10 +23,60 @@
         
             <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
         
-        <lastBuildDate>Sun, 12 Mar 2023 21:52:07 &#43;0800</lastBuildDate>
+        <lastBuildDate>Mon, 13 Mar 2023 19:44:56 &#43;0800</lastBuildDate>
         
             <atom:link rel="self" type="application/rss&#43;xml" href="https://ghoooooost.com/rss.xml" />
         
+        
+            <item>
+                <title>游戏</title>
+                <link>https://ghoooooost.com/posts/other-game/</link>
+                <guid isPermaLink="true">https://ghoooooost.com/posts/other-game/</guid>
+                <pubDate>Mon, 13 Mar 2023 19:34:00 &#43;0800</pubDate>
+                
+                    <author>cghoooooost7@gmail.com ({Ø})</author>
+                
+                <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
+                
+                    <description>&lt;h2 id=&#34;csgo&#34;&gt;CS:GO&lt;/h2&gt;
+&lt;h3 id=&#34;灵敏度设定&#34;&gt;灵敏度设定&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;1920x1080下&lt;/strong&gt;: &lt;code&gt;1400&lt;/code&gt; x &lt;code&gt;2.00&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3840x2160下&lt;/strong&gt;: &lt;code&gt;2500&lt;/code&gt; x &lt;code&gt;1.20&lt;/code&gt;&lt;/p&gt;
+</description>
+                
+                
+                
+                
+                
+                    
+                        
+                            
+                                
+                                
+                                
+                                    <category domain="https://ghoooooost.com/categories/%E5%85%B6%E4%BB%96/">其他</category>
+                                
+                            
+                        
+                    
+                        
+                            
+                                
+                                
+                                
+                                    <category domain="https://ghoooooost.com/tags/%E5%85%B6%E4%BB%96/">其他</category>
+                                
+                            
+                                
+                                
+                                
+                                    <category domain="https://ghoooooost.com/tags/%E6%B8%B8%E6%88%8F/">游戏</category>
+                                
+                            
+                        
+                    
+                
+            </item>
         
             <item>
                 <title>异形系列</title>
@@ -2220,8 +2270,8 @@ $$&lt;/p&gt;
         
             <item>
                 <title>Hello World</title>
-                <link>https://ghoooooost.com/posts/technique-hello-world/</link>
-                <guid isPermaLink="true">https://ghoooooost.com/posts/technique-hello-world/</guid>
+                <link>https://ghoooooost.com/posts/technique-hello_world/</link>
+                <guid isPermaLink="true">https://ghoooooost.com/posts/technique-hello_world/</guid>
                 <pubDate>Thu, 01 Jan 1970 00:00:00 &#43;0800</pubDate>
                 
                     <author>cghoooooost7@gmail.com ({Ø})</author>
