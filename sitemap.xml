@@ -3,27 +3,33 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ghoooooost.com/categories/</loc>
-    <lastmod>2023-04-19T18:35:01+08:00</lastmod>
+    <lastmod>2023-06-15T21:56:42+08:00</lastmod>
+  </url><url>
+    <loc>https://ghoooooost.com/</loc>
+    <lastmod>2023-06-15T21:56:42+08:00</lastmod>
+  </url><url>
+    <loc>https://ghoooooost.com/posts/</loc>
+    <lastmod>2023-06-15T21:56:42+08:00</lastmod>
+  </url><url>
+    <loc>https://ghoooooost.com/tags/</loc>
+    <lastmod>2023-06-15T21:56:42+08:00</lastmod>
+  </url><url>
+    <loc>https://ghoooooost.com/posts/technique-dstserver/</loc>
+    <lastmod>2023-06-15T21:56:42+08:00</lastmod>
+  </url><url>
+    <loc>https://ghoooooost.com/tags/%E6%8A%80%E6%9C%AF/</loc>
+    <lastmod>2023-06-15T21:56:42+08:00</lastmod>
+  </url><url>
+    <loc>https://ghoooooost.com/categories/%E6%8A%80%E6%9C%AF/</loc>
+    <lastmod>2023-06-15T21:56:42+08:00</lastmod>
+  </url><url>
+    <loc>https://ghoooooost.com/tags/%E6%B8%B8%E6%88%8F/</loc>
+    <lastmod>2023-06-15T21:56:42+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/chatglm/</loc>
     <lastmod>2023-04-19T18:35:01+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/posts/technique-chatglm-6b/</loc>
-    <lastmod>2023-04-19T18:35:01+08:00</lastmod>
-  </url><url>
-    <loc>https://ghoooooost.com/</loc>
-    <lastmod>2023-04-19T18:35:01+08:00</lastmod>
-  </url><url>
-    <loc>https://ghoooooost.com/posts/</loc>
-    <lastmod>2023-04-19T18:35:01+08:00</lastmod>
-  </url><url>
-    <loc>https://ghoooooost.com/tags/</loc>
-    <lastmod>2023-04-19T18:35:01+08:00</lastmod>
-  </url><url>
-    <loc>https://ghoooooost.com/tags/%E6%8A%80%E6%9C%AF/</loc>
-    <lastmod>2023-04-19T18:35:01+08:00</lastmod>
-  </url><url>
-    <loc>https://ghoooooost.com/categories/%E6%8A%80%E6%9C%AF/</loc>
     <lastmod>2023-04-19T18:35:01+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/conda/</loc>
@@ -59,9 +65,6 @@
     <loc>https://ghoooooost.com/categories/%E5%85%B6%E4%BB%96/</loc>
     <lastmod>2023-03-13T19:44:06+08:00</lastmod>
   </url><url>
-    <loc>https://ghoooooost.com/tags/%E6%B8%B8%E6%88%8F/</loc>
-    <lastmod>2023-03-13T19:44:06+08:00</lastmod>
-  </url><url>
     <loc>https://ghoooooost.com/posts/other-game/</loc>
     <lastmod>2023-03-13T19:44:06+08:00</lastmod>
   </url><url>
@@ -78,13 +81,13 @@
     <lastmod>2023-03-09T15:53:41+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/mac/</loc>
-    <lastmod>2023-03-07T00:28:06+08:00</lastmod>
+    <lastmod>2023-06-15T21:51:54+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/posts/technique-macos/</loc>
-    <lastmod>2023-03-07T00:28:06+08:00</lastmod>
+    <lastmod>2023-06-15T21:51:54+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/unix/</loc>
-    <lastmod>2023-03-07T00:28:06+08:00</lastmod>
+    <lastmod>2023-06-15T21:51:54+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/%E6%80%9D%E8%80%83/</loc>
     <lastmod>2023-03-03T22:39:29+08:00</lastmod>
@@ -117,7 +120,7 @@
     <lastmod>2023-03-10T21:45:56+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/about/</loc>
-    <lastmod>2023-03-09T11:28:19+08:00</lastmod>
+    <lastmod>2023-06-15T21:49:11+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/posts/technique-how_to_ask_questions_the_smart_way/</loc>
     <lastmod>2023-03-01T21:06:10+08:00</lastmod>
