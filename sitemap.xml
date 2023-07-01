@@ -3,25 +3,25 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ghoooooost.com/categories/</loc>
-    <lastmod>2023-06-15T21:56:42+08:00</lastmod>
+    <lastmod>2023-07-01T22:18:25+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/</loc>
-    <lastmod>2023-06-15T21:56:42+08:00</lastmod>
+    <lastmod>2023-07-01T22:18:25+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/posts/</loc>
-    <lastmod>2023-06-15T21:56:42+08:00</lastmod>
+    <lastmod>2023-07-01T22:18:25+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/</loc>
-    <lastmod>2023-06-15T21:56:42+08:00</lastmod>
+    <lastmod>2023-07-01T22:18:25+08:00</lastmod>
   </url><url>
-    <loc>https://ghoooooost.com/posts/technique-dstserver/</loc>
+    <loc>https://ghoooooost.com/posts/technique/dstserver/</loc>
     <lastmod>2023-06-15T21:56:42+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/%E6%8A%80%E6%9C%AF/</loc>
-    <lastmod>2023-06-15T21:56:42+08:00</lastmod>
+    <lastmod>2023-07-01T21:51:13+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/categories/%E6%8A%80%E6%9C%AF/</loc>
-    <lastmod>2023-06-15T21:56:42+08:00</lastmod>
+    <lastmod>2023-07-01T21:51:13+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/%E6%B8%B8%E6%88%8F/</loc>
     <lastmod>2023-06-15T21:56:42+08:00</lastmod>
@@ -29,20 +29,20 @@
     <loc>https://ghoooooost.com/tags/chatglm/</loc>
     <lastmod>2023-04-19T18:35:01+08:00</lastmod>
   </url><url>
-    <loc>https://ghoooooost.com/posts/technique-chatglm-6b/</loc>
+    <loc>https://ghoooooost.com/posts/technique/chatglm-6b/</loc>
     <lastmod>2023-04-19T18:35:01+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/conda/</loc>
     <lastmod>2023-03-18T21:47:06+08:00</lastmod>
   </url><url>
-    <loc>https://ghoooooost.com/posts/technique-conda/</loc>
+    <loc>https://ghoooooost.com/posts/technique/conda/</loc>
     <lastmod>2023-03-18T21:47:06+08:00</lastmod>
   </url><url>
-    <loc>https://ghoooooost.com/posts/technique-docker/</loc>
-    <lastmod>2023-03-19T22:13:58+08:00</lastmod>
-  </url><url>
     <loc>https://ghoooooost.com/tags/docker/</loc>
-    <lastmod>2023-03-19T22:13:58+08:00</lastmod>
+    <lastmod>2023-07-01T21:51:13+08:00</lastmod>
+  </url><url>
+    <loc>https://ghoooooost.com/posts/technique/docker/</loc>
+    <lastmod>2023-07-01T21:51:13+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/python/</loc>
     <lastmod>2023-03-18T21:47:06+08:00</lastmod>
@@ -50,13 +50,13 @@
     <loc>https://ghoooooost.com/tags/ffmpeg/</loc>
     <lastmod>2023-03-17T21:47:24+08:00</lastmod>
   </url><url>
-    <loc>https://ghoooooost.com/posts/technique-ffmpeg/</loc>
+    <loc>https://ghoooooost.com/posts/technique/ffmpeg/</loc>
     <lastmod>2023-03-17T21:47:24+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/%E5%A4%87%E4%BB%BD/</loc>
     <lastmod>2023-03-15T22:06:06+08:00</lastmod>
   </url><url>
-    <loc>https://ghoooooost.com/posts/technique-catalog_structure_specification/</loc>
+    <loc>https://ghoooooost.com/posts/technique/catalog_structure_specification/</loc>
     <lastmod>2023-03-15T22:06:06+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/%E5%85%B6%E4%BB%96/</loc>
@@ -65,13 +65,13 @@
     <loc>https://ghoooooost.com/categories/%E5%85%B6%E4%BB%96/</loc>
     <lastmod>2023-03-13T19:44:06+08:00</lastmod>
   </url><url>
-    <loc>https://ghoooooost.com/posts/other-game/</loc>
+    <loc>https://ghoooooost.com/posts/other/game/</loc>
     <lastmod>2023-03-13T19:44:06+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/%E7%A7%91%E5%B9%BB/</loc>
     <lastmod>2023-03-09T15:53:41+08:00</lastmod>
   </url><url>
-    <loc>https://ghoooooost.com/posts/film-alien/</loc>
+    <loc>https://ghoooooost.com/posts/film/alien/</loc>
     <lastmod>2023-03-09T15:53:41+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/%E5%BD%B1%E8%A7%86/</loc>
@@ -83,7 +83,7 @@
     <loc>https://ghoooooost.com/tags/mac/</loc>
     <lastmod>2023-06-15T21:51:54+08:00</lastmod>
   </url><url>
-    <loc>https://ghoooooost.com/posts/technique-macos/</loc>
+    <loc>https://ghoooooost.com/posts/technique/macos/</loc>
     <lastmod>2023-06-15T21:51:54+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/unix/</loc>
@@ -95,34 +95,34 @@
     <loc>https://ghoooooost.com/categories/%E6%80%9D%E8%80%83/</loc>
     <lastmod>2023-03-03T22:39:29+08:00</lastmod>
   </url><url>
-    <loc>https://ghoooooost.com/posts/consider-planetary_impact/</loc>
+    <loc>https://ghoooooost.com/posts/consider/planetary_impact/</loc>
     <lastmod>2023-03-03T22:39:29+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/%E5%AE%87%E5%AE%99/</loc>
     <lastmod>2023-03-03T22:39:29+08:00</lastmod>
   </url><url>
-    <loc>https://ghoooooost.com/posts/consider-fermi_paradox/</loc>
+    <loc>https://ghoooooost.com/posts/consider/fermi_paradox/</loc>
     <lastmod>2023-03-02T22:59:41+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/blog/</loc>
     <lastmod>2023-03-02T14:03:27+08:00</lastmod>
   </url><url>
-    <loc>https://ghoooooost.com/posts/technique-hugo/</loc>
+    <loc>https://ghoooooost.com/posts/technique/hugo/</loc>
     <lastmod>2023-03-02T14:03:27+08:00</lastmod>
   </url><url>
+    <loc>https://ghoooooost.com/about/</loc>
+    <lastmod>2023-07-01T21:50:56+08:00</lastmod>
+  </url><url>
     <loc>https://ghoooooost.com/tags/%E9%9A%8F%E6%83%B3/</loc>
-    <lastmod>2023-03-10T21:45:56+08:00</lastmod>
+    <lastmod>2023-07-01T22:18:25+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/categories/%E9%9A%8F%E6%83%B3/</loc>
-    <lastmod>2023-03-10T21:45:56+08:00</lastmod>
+    <lastmod>2023-07-01T22:18:25+08:00</lastmod>
   </url><url>
-    <loc>https://ghoooooost.com/posts/reflection-202303/</loc>
-    <lastmod>2023-03-10T21:45:56+08:00</lastmod>
+    <loc>https://ghoooooost.com/posts/reflection/2023/</loc>
+    <lastmod>2023-07-01T22:18:25+08:00</lastmod>
   </url><url>
-    <loc>https://ghoooooost.com/about/</loc>
-    <lastmod>2023-06-15T21:49:11+08:00</lastmod>
-  </url><url>
-    <loc>https://ghoooooost.com/posts/technique-how_to_ask_questions_the_smart_way/</loc>
+    <loc>https://ghoooooost.com/posts/technique/how_to_ask_questions_the_smart_way/</loc>
     <lastmod>2023-03-01T21:06:10+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/%E7%9F%A5%E8%AF%86/</loc>
@@ -134,13 +134,13 @@
     <loc>https://ghoooooost.com/categories/%E8%BD%AC%E8%BD%BD/</loc>
     <lastmod>2023-03-01T21:06:10+08:00</lastmod>
   </url><url>
-    <loc>https://ghoooooost.com/posts/technique-latex/</loc>
+    <loc>https://ghoooooost.com/posts/technique/latex/</loc>
     <lastmod>2023-03-01T21:14:50+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/%E6%95%B0%E5%AD%A6/</loc>
     <lastmod>2023-03-01T21:14:50+08:00</lastmod>
   </url><url>
-    <loc>https://ghoooooost.com/posts/technique-hello_world/</loc>
+    <loc>https://ghoooooost.com/posts/technique/hello_world/</loc>
     <lastmod>2023-03-02T14:34:18+08:00</lastmod>
   </url><url>
     <loc>https://ghoooooost.com/tags/helloworld/</loc>
