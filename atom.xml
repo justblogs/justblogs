@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">nØthing</title>
     <subtitle type="html">{Ø}&#39;s Blog</subtitle>
-    <updated>2023-07-05T23:23:35&#43;08:00</updated>
+    <updated>2023-08-26T17:53:19&#43;08:00</updated>
     <id>https://ghoooooost.com/</id>
     <link rel="alternate" type="text/html" href="https://ghoooooost.com/" />
     <link rel="self" type="application/atom&#43;xml" href="https://ghoooooost.com/atom.xml" />
@@ -17,10 +17,122 @@
     <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
     <generator uri="https://gohugo.io/" version="0.105.0">Hugo</generator>
         <entry>
+            <title type="text">进制</title>
+            <link rel="alternate" type="text/html" href="https://ghoooooost.com/posts/technique/jin_zhi/" />
+            <id>https://ghoooooost.com/posts/technique/jin_zhi/</id>
+            <updated>2023-08-26T17:45:56&#43;08:00</updated>
+            <published>2023-08-20T12:34:00&#43;08:00</published>
+            <author>
+                    <name>{Ø}</name>
+                    <uri>https://ghoooooost.com/</uri>
+                    <email>cghoooooost7@gmail.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">进制 进位制又称进制，是一种记数方式，亦称……</summary>
+            
+                <content type="html">&lt;h1 id=&#34;进制&#34;&gt;进制&lt;/h1&gt;
+&lt;p&gt;进位制又称进制，是一种记数方式，亦称位置记法（positional notation）、数字命位法、定位记法、进位记数法、位值记数法（place-value notation）、位置数值系统（positional numeral system）；利用这种“记数法”，可以使用有限种“数字符号”来表示所有的数值。&lt;/p&gt;
+&lt;p&gt;通常会在数字后加字母缩写后缀以区分不同进制，常用标识如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;B: binary, 二进制, (0, 1)
+
+O: octal, 八进制, (0, 1, 2, 3, 4, 5, 6, 7)
+
+D: decimal, 十进制, (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+H: hex, 十六进制, (0-9, A, B, C, D, E)
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;进制间的转换&#34;&gt;进制间的转换&lt;/h2&gt;
+&lt;h3 id=&#34;二八十六进制-到-十进制&#34;&gt;二、八、十六进制 到 十进制&lt;/h3&gt;
+&lt;h4 id=&#34;二进制到十进制&#34;&gt;二进制到十进制&lt;/h4&gt;
+&lt;p&gt;101011&lt;strong&gt;B&lt;/strong&gt; = 43&lt;strong&gt;D&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;步骤：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;$1\times2^0 + 1\times2^1 + 0\times2^2 + 1\times2^3 + 0\times2^4 + 1\times2^5 = 43$&lt;/p&gt;
+&lt;h4 id=&#34;八进制到十进制&#34;&gt;八进制到十进制&lt;/h4&gt;
+&lt;p&gt;53&lt;strong&gt;O&lt;/strong&gt; = 43&lt;strong&gt;D&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;步骤：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;$3\times8^0 + 5\times8^1 = 43$&lt;/p&gt;
+&lt;h4 id=&#34;十六进制到十进制&#34;&gt;十六进制到十进制&lt;/h4&gt;
+&lt;p&gt;2B&lt;strong&gt;H&lt;/strong&gt; = 43&lt;strong&gt;D&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;步骤：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;$11(B)\times16^0 + 2\times16^1 = 43$&lt;/p&gt;
+&lt;h3 id=&#34;十进制-到-二八十六进制&#34;&gt;十进制 到 二、八、十六进制&lt;/h3&gt;
+&lt;h4 id=&#34;十进制到二进制&#34;&gt;十进制到二进制&lt;/h4&gt;
+&lt;p&gt;43&lt;strong&gt;D&lt;/strong&gt; = 101011&lt;strong&gt;B&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ghoooooost.com/pic/%E8%BF%9B%E5%88%B6.assets/%E8%BF%9B%E5%88%B6.jpg&#34; alt=&#34;进制&#34;&gt;&lt;/p&gt;
+&lt;h4 id=&#34;十进制到八进制&#34;&gt;十进制到八进制&lt;/h4&gt;
+&lt;p&gt;796&lt;strong&gt;D&lt;/strong&gt; = 1434&lt;strong&gt;O&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ghoooooost.com/pic/%E8%BF%9B%E5%88%B6.assets/%E8%BF%9B%E5%88%B62.jpg&#34; alt=&#34;进制2&#34;&gt;&lt;/p&gt;
+&lt;h4 id=&#34;十进制到十六进制&#34;&gt;十进制到十六进制&lt;/h4&gt;
+&lt;p&gt;796&lt;strong&gt;D&lt;/strong&gt; = 31C&lt;strong&gt;H&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ghoooooost.com/pic/%E8%BF%9B%E5%88%B6.assets/%E8%BF%9B%E5%88%B63.jpg&#34; alt=&#34;进制3&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;二进制-与-八十六进制&#34;&gt;二进制 与 八、十六进制&lt;/h3&gt;
+&lt;h4 id=&#34;二进制到八进制&#34;&gt;二进制到八进制&lt;/h4&gt;
+&lt;p&gt;每三位二进制可转化为一位八进制数，如 101&lt;strong&gt;B&lt;/strong&gt; = 5&lt;strong&gt;O&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;不足三位用0补齐&lt;/p&gt;
+&lt;p&gt;11010111.0100111&lt;strong&gt;B&lt;/strong&gt; = 327.234&lt;strong&gt;O&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;011010111.010011100
+3  2  7  .2  3  4
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;八进制到二进制&#34;&gt;八进制到二进制&lt;/h4&gt;
+&lt;p&gt;原理同上，将八进制每位拆分为三位二进制数，再拼接到一起&lt;/p&gt;
+&lt;h4 id=&#34;二进制到十六进制&#34;&gt;二进制到十六进制&lt;/h4&gt;
+&lt;p&gt;每四位二进制数转化为一位十六进制数，如 1010&lt;strong&gt;B&lt;/strong&gt; = 10&lt;strong&gt;O&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;不足四位用0补齐&lt;/p&gt;
+&lt;p&gt;11010111&lt;strong&gt;B&lt;/strong&gt; = D7&lt;strong&gt;H&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;11010111
+D   7
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;十六进制到二进制&#34;&gt;十六进制到二进制&lt;/h4&gt;
+&lt;p&gt;原理同上，将十六进制每位拆分为四位二进制数，拼接到一起&lt;/p&gt;
+&lt;h3 id=&#34;八进制-与-十六进制&#34;&gt;八进制 与 十六进制&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;八进制 到 二进制 到 十六进制&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;十六进制 到 二进制 到 八进制&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;参考链接：https://www.cnblogs.com/gaizai/p/4233780.html&lt;/p&gt;
+&lt;/blockquote&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="https://ghoooooost.com/categories/%E6%8A%80%E6%9C%AF/" term="技术" label="技术" />
+                            
+                        
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="https://ghoooooost.com/tags/%E6%8A%80%E6%9C%AF/" term="技术" label="技术" />
+                            
+                        
+                            
+                            
+                            
+                                <category scheme="https://ghoooooost.com/tags/%E8%BF%9B%E5%88%B6/" term="进制" label="进制" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+        <entry>
             <title type="text">饥荒服务器搭建</title>
-            <link rel="alternate" type="text/html" href="https://ghoooooost.com/posts/technique/dstserver/" />
-            <id>https://ghoooooost.com/posts/technique/dstserver/</id>
-            <updated>2023-06-15T21:56:42&#43;08:00</updated>
+            <link rel="alternate" type="text/html" href="https://ghoooooost.com/posts/other/dstserver/" />
+            <id>https://ghoooooost.com/posts/other/dstserver/</id>
+            <updated>2023-08-26T17:51:15&#43;08:00</updated>
             <published>2023-06-03T15:51:00&#43;08:00</published>
             <author>
                     <name>{Ø}</name>
@@ -450,7 +562,7 @@ donstarve_dir 表示的是&lt;strong&gt;地图的位置&lt;/strong&gt;&lt;/p&gt;
                             
                             
                             
-                                <category scheme="https://ghoooooost.com/categories/%E6%8A%80%E6%9C%AF/" term="技术" label="技术" />
+                                <category scheme="https://ghoooooost.com/categories/%E5%85%B6%E4%BB%96/" term="其他" label="其他" />
                             
                         
                     
@@ -460,7 +572,7 @@ donstarve_dir 表示的是&lt;strong&gt;地图的位置&lt;/strong&gt;&lt;/p&gt;
                             
                             
                             
-                                <category scheme="https://ghoooooost.com/tags/%E6%8A%80%E6%9C%AF/" term="技术" label="技术" />
+                                <category scheme="https://ghoooooost.com/tags/%E5%85%B6%E4%BB%96/" term="其他" label="其他" />
                             
                         
                             
@@ -1669,9 +1781,9 @@ USER_BASE = &#39;/Users/ghost7/miniforge3/envs/math/bin&#39;&lt;/p&gt;
     
         <entry>
             <title type="text">目录结构规范</title>
-            <link rel="alternate" type="text/html" href="https://ghoooooost.com/posts/technique/catalog_structure_specification/" />
-            <id>https://ghoooooost.com/posts/technique/catalog_structure_specification/</id>
-            <updated>2023-03-15T22:06:06&#43;08:00</updated>
+            <link rel="alternate" type="text/html" href="https://ghoooooost.com/posts/other/catalog_structure_specification/" />
+            <id>https://ghoooooost.com/posts/other/catalog_structure_specification/</id>
+            <updated>2023-08-26T17:51:06&#43;08:00</updated>
             <published>2023-03-15T22:05:00&#43;08:00</published>
             <author>
                     <name>{Ø}</name>
@@ -1724,7 +1836,7 @@ USER_BASE = &#39;/Users/ghost7/miniforge3/envs/math/bin&#39;&lt;/p&gt;
                             
                             
                             
-                                <category scheme="https://ghoooooost.com/categories/%E6%8A%80%E6%9C%AF/" term="技术" label="技术" />
+                                <category scheme="https://ghoooooost.com/categories/%E5%85%B6%E4%BB%96/" term="其他" label="其他" />
                             
                         
                     
@@ -1734,7 +1846,7 @@ USER_BASE = &#39;/Users/ghost7/miniforge3/envs/math/bin&#39;&lt;/p&gt;
                             
                             
                             
-                                <category scheme="https://ghoooooost.com/tags/%E6%8A%80%E6%9C%AF/" term="技术" label="技术" />
+                                <category scheme="https://ghoooooost.com/tags/%E5%85%B6%E4%BB%96/" term="其他" label="其他" />
                             
                         
                             
