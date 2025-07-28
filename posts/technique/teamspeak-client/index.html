@@ -59,13 +59,13 @@ TeamSpeak 是一款专业的语音通信软件，以高音质、低延迟著称�
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "datePublished": "2024-12-31T12:38:00+08:00",
-        "dateModified": "2025-07-28T21:28:51+08:00",
+        "dateModified": "2025-07-28T21:35:20+08:00",
         "url": "https://ghoooooost.com/posts/technique/teamspeak-client/",
         "headline": "TeamSpeak 客户端使用指北",
         "description": "简介 TeamSpeak 官网：https://teamspeak.com\nTeamSpeak 是一款专业的语音通信软件，以高音质、低延迟著称，广泛应用于电竞赛事、团队协作和在线游戏中。其稳定性和低资源占用，使其成为许多国际电竞比赛的首选语音平台，确保选手之间的沟通高效且流畅\n",
         "inLanguage" : "zh-CN",
         "articleSection": "posts",
-        "wordCount":  622 ,
+        "wordCount":  607 ,
         "image": ["https://ghoooooost.com/pic/TeamSpeak_Client/Life_ServerChat2-scaled.jpg","https://ghoooooost.com/pic/TeamSpeak_Client/image-20241231105513706.png","https://ghoooooost.com/pic/TeamSpeak_Client/image-20241231110255416.png","https://ghoooooost.com/pic/TeamSpeak_Client/image-20241231110829756.png","https://ghoooooost.com/pic/TeamSpeak_Client/image-20241231111021398.png","https://ghoooooost.com/pic/TeamSpeak_Client/image-20241231111926503.png","https://ghoooooost.com/pic/TeamSpeak_Client/image-20241231111623193.png","https://ghoooooost.com/pic/TeamSpeak_Client/ts3-Sound\u0026MicSettings.png"],
         "author": {
             "@type": "Person",
@@ -111,7 +111,7 @@ TeamSpeak 是一款专业的语音通信软件，以高音质、低延迟著称�
 <meta property="og:locale" content="zh-cn" /><meta property="og:image" content="https://ghoooooost.com/pic/TeamSpeak_Client/Life_ServerChat2-scaled.jpg" />
 <meta property="og:type" content="article" />
     <meta property="article:published_time" content="2024-12-31T12:38:00&#43;08:00" />
-    <meta property="article:modified_time" content="2025-07-28T21:28:51&#43;08:00" />
+    <meta property="article:modified_time" content="2025-07-28T21:35:20&#43;08:00" />
     
     <meta property="article:section" content="posts" />
 
@@ -253,8 +253,12 @@ TeamSpeak 是一款专业的语音通信软件，以高音质、低延迟著称�
 <p>TeamSpeak 官网：https://teamspeak.com</p></blockquote>
 <p>TeamSpeak 是一款专业的语音通信软件，以高音质、低延迟著称，广泛应用于电竞赛事、团队协作和在线游戏中。其稳定性和低资源占用，使其成为许多国际电竞比赛的首选语音平台，确保选手之间的沟通高效且流畅</p>
 <img src="/pic/TeamSpeak_Client/Life_ServerChat2-scaled.jpg" alt="Life_ServerChat2-scaled" style="zoom:50%;" />
-<p>TeamSpeak 目前有两个客户端版本，TeamSpeak 3 是较老版本，简单易用；TeamSpeak 5 是最新的版本，界面更现代化，拥有官方中文，但仍处于 beta 测试环节，必须注册一个账号才能进入使用</p>
-<p>本教程仅介绍 TeamSpeak 3 客户端的使用方式，个人也更偏爱 TeamSpeak 3 的客户端样式，5 的使用方式同理，用过 3 后可以无感过渡</p>
+<p>TeamSpeak 目前有两个客户端版本：</p>
+<ul>
+<li>TeamSpeak 3 是较老版本，简单易用，个人也更偏爱 TeamSpeak 3 客户端的简洁样式</li>
+<li>TeamSpeak 5 是最新的版本，界面更现代化，拥有官方中文，但仍处于 beta 测试环节，必须注册一个账号才能进入使用</li>
+</ul>
+<p>本教程仅介绍 TeamSpeak 3 客户端的使用方式，5 的使用方式同理，用过 3 后可以无感过渡</p>
 <h2 id="安装"><a href="#安装" class="anchor-link" aria-label="安装"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:安装" class="headings">安装</a></h2>
 <p>打开网址 <a href="https://teamspeak.com/zh-CN/downloads/#ts3client" target="_blank" rel="noopener">https://teamspeak.com/zh-CN/downloads/#ts3client</a> 点击 <code>Download</code> 下载，要注意选择的是第二栏的 <code>TS3 Client</code></p>
 <p><img src="/pic/TeamSpeak_Client/image-20241231105513706.png" alt="image-20241231105513706"></p>
