@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">nØthing</title>
     <subtitle type="html">{Ø}&#39;s Blog</subtitle>
-    <updated>2026-01-27T15:22:05&#43;08:00</updated>
+    <updated>2026-01-27T15:31:05&#43;08:00</updated>
     <id>https://ghoooooost.com/</id>
     <link rel="alternate" type="text/html" href="https://ghoooooost.com/" />
     <link rel="self" type="application/atom&#43;xml" href="https://ghoooooost.com/atom.xml" />
@@ -17,10 +17,10 @@
     <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
     <generator uri="https://gohugo.io/" version="0.152.2">Hugo</generator>
         <entry>
-            <title type="text">Codex 的 Agent Loop 是怎样的</title>
+            <title type="text">Codex 的 Agent Loop 是怎样构建的</title>
             <link rel="alternate" type="text/html" href="https://ghoooooost.com/posts/ai/codex_agent_loop/" />
             <id>https://ghoooooost.com/posts/ai/codex_agent_loop/</id>
-            <updated>2026-01-27T15:18:37&#43;08:00</updated>
+            <updated>2026-01-27T15:30:58&#43;08:00</updated>
             <published>2026-01-27T12:00:00&#43;08:00</published>
             <author>
                     <name>{Ø}</name>
@@ -55,7 +55,7 @@
 &lt;p&gt;尽管如此，每个轮次总是以一条助手消息（例如“我已添加了您请求的 &lt;code&gt;architecture.md&lt;/code&gt; ”）结束，这标志着 Agent Loop 的终止状态。从 Agent 的角度来看，其工作已完成，控制权将返回给用户。&lt;/p&gt;
 &lt;p&gt;从用户输入到 Agent 响应的过程，如示意图所示，称为对话的一个轮次（在 Codex 中称为一个线程）。&lt;/p&gt;
 &lt;p&gt;这个对话轮次可能涉及模型推断与工具调用之间的多次迭代。每当您向现有对话发送新消息时，对话历史会作为新轮次提示的一部分被包含，其中包括先前轮次的消息和工具调用。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://ghoooooost.com/pic/_assets/20260126153549.png&#34; alt=&#34;20260126153549&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ghoooooost.com/pic/codex_agent_loop/20260126153549.png&#34; alt=&#34;20260126153549&#34;&gt;&lt;/p&gt;
 &lt;p&gt;这意味着随着对话的增多，用于模型采样的提示长度也会增加。这一长度至关重要，因为每个模型都有一个上下文窗口（context window），即一次推理调用所能使用的最大令牌数。需要注意的是，这个窗口既包括输入令牌也包括输出令牌。可以想象为，一个 Agent 可能决定在一轮对话中调用数百个工具，从而耗尽上下文窗口。因此，&lt;strong&gt;管理上下文窗口是 Agent 的众多职责之一&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;接下来，开始深入了解 Codex 是如何运行 Agent Loop 的。&lt;/p&gt;
 &lt;h2 id=&#34;模型推理&#34;&gt;&lt;a href=&#34;https://ghoooooost.com/posts/ai/codex_agent_loop/#模型推理&#34; class=&#34;anchor-link&#34; aria-label=&#34;模型推理&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 512 512&#34; class=&#34;icon anchor-icon&#34;&gt;&lt;path d=&#34;M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z&#34;/&gt;&lt;/svg&gt;&lt;/a&gt;&lt;a href=&#34;https://ghoooooost.com/posts/ai/codex_agent_loop/#contents:模型推理&#34; class=&#34;headings&#34;&gt;模型推理&lt;/a&gt;&lt;/h2&gt;
@@ -257,7 +257,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;一旦 Codex 构建好要发送给 Responses API 的完整 JSON 载荷，它就会根据 Responses API 端点在 &lt;code&gt;~/.codex/config.toml&lt;/code&gt; 中的配置情况，使用对应的 &lt;code&gt;Authorization&lt;/code&gt; 头部信息发起 HTTP POST 请求（如果指定了额外的 HTTP 头部和查询参数，也会一并添加）。&lt;/p&gt;
 &lt;p&gt;当 OpenAI Responses API 服务器收到请求时，它会使用 JSON 数据来推导出模型的提示，如下所示（请注意，自定义实现的 Responses API 可能会做出不同的选择）：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://ghoooooost.com/pic/_assets/20260126162544.png&#34; alt=&#34;20260126162544&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ghoooooost.com/pic/codex_agent_loop/20260126162544.png&#34; alt=&#34;20260126162544&#34;&gt;&lt;/p&gt;
 &lt;p&gt;可以看到，提示中前三个项目的顺序是由服务器决定的，而非客户端。但是在这三个项目中，只有系统消息的内容由服务器控制，因为 &lt;code&gt;tools&lt;/code&gt; 和 &lt;code&gt;instructions&lt;/code&gt; 是由客户端决定的。接着是来自 JSON 的有效载荷 &lt;code&gt;input&lt;/code&gt; ，最终完成提示。&lt;/p&gt;
 &lt;p&gt;现在已经有了提示，准备对模型进行采样。&lt;/p&gt;
 &lt;h3 id=&#34;第一轮&#34;&gt;&lt;a href=&#34;https://ghoooooost.com/posts/ai/codex_agent_loop/#第一轮&#34; class=&#34;anchor-link&#34; aria-label=&#34;第一轮&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 512 512&#34; class=&#34;icon anchor-icon&#34;&gt;&lt;path d=&#34;M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z&#34;/&gt;&lt;/svg&gt;&lt;/a&gt;&lt;a href=&#34;https://ghoooooost.com/posts/ai/codex_agent_loop/#contents:第一轮&#34; class=&#34;headings&#34;&gt;第一轮&lt;/a&gt;&lt;/h3&gt;
@@ -325,7 +325,7 @@ data: {&amp;#34;type&amp;#34;:&amp;#34;response.completed&amp;#34;,&amp;#34;resp
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;用于采样模型作为后续查询一部分的提示词最终形式如下：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://ghoooooost.com/pic/_assets/20260126162954.png&#34; alt=&#34;20260126162954&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ghoooooost.com/pic/codex_agent_loop/20260126162954.png&#34; alt=&#34;20260126162954&#34;&gt;&lt;/p&gt;
 &lt;p&gt;特别是要注意，旧提示词是新提示词的精确前缀。这是有意为之的，能充分利用提示缓存，从而大幅提高后续的请求效率。&lt;/p&gt;
 &lt;p&gt;回顾最初绘制的 Agent Loop 图，可以看到推理与工具调用之间可能存在多次迭代过程。提示信息会持续累积，直到最终接收到助手消息——这标志着当前回合的结束。&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;data: {&amp;#34;type&amp;#34;:&amp;#34;response.output_text.done&amp;#34;,&amp;#34;text&amp;#34;: &amp;#34;I added a diagram to explain...&amp;#34;, ...}
@@ -384,7 +384,7 @@ data: {&amp;#34;type&amp;#34;:&amp;#34;response.completed&amp;#34;,&amp;#34;resp
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;再次强调，由于是在延续对话，发送给 Responses API 的 &lt;code&gt;input&lt;/code&gt; 长度会持续增加：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://ghoooooost.com/pic/_assets/20260126163311.png&#34; alt=&#34;20260126163311&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ghoooooost.com/pic/codex_agent_loop/20260126163311.png&#34; alt=&#34;20260126163311&#34;&gt;&lt;/p&gt;
 &lt;p&gt;接下来探讨一下这个不断增长的提示对性能意味着什么。&lt;/p&gt;
 &lt;h3 id=&#34;性能考量&#34;&gt;&lt;a href=&#34;https://ghoooooost.com/posts/ai/codex_agent_loop/#性能考量&#34; class=&#34;anchor-link&#34; aria-label=&#34;性能考量&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 512 512&#34; class=&#34;icon anchor-icon&#34;&gt;&lt;path d=&#34;M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z&#34;/&gt;&lt;/svg&gt;&lt;/a&gt;&lt;a href=&#34;https://ghoooooost.com/posts/ai/codex_agent_loop/#contents:性能考量&#34; class=&#34;headings&#34;&gt;性能考量&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;你可能会问：&amp;quot;等等，在整个对话过程中发送给 Responses API 的 JSON 数据量，难道不是按照 Agent Loop 的平方来增长的吗？&amp;quot;&lt;/p&gt;
