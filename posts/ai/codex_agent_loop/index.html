@@ -1,811 +1,237 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-    <head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
-    <meta charset="UTF-8" />
-
-    <meta name="generator" content="Hugo 0.152.2"><meta name="theme-color" content="#fff" />
-    <meta name="color-scheme" content="light dark">
-
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
-    
-    <meta http-equiv="Cache-Control" content="no-transform" />
-    
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
-
-    <title>Codex 的 Agent Loop 是怎样构建的 | nØthing</title>
-
-    <link rel="stylesheet" href="/css/meme.min.623b2633c1db6e303d7c63f758255749a278c034cfe6e6e6e8367ab74cb82059.css"/>
-
-    
-    
-        
-            <script src="/js/meme.min.60c9607187770974b0557afb656b9af66524f1e2b096396869a2dc23e13bde45.js"></script>
-
-        
-    
-
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto&#43;Serif&#43;SC:wght@400;500;700&amp;family=Source&#43;Code&#43;Pro:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" media="print" onload="this.media='all'" />
-        <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto&#43;Serif&#43;SC:wght@400;500;700&amp;family=Source&#43;Code&#43;Pro:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" /></noscript>
-
-    <meta name="author" content="{Ø}" /><meta name="description" content="Agent Loop 是 Codex CLI 中的核心交互逻辑，负责协调用户、模型以及工具之间的交互，Codex 将其称为「harness」。
-" />
-
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg" />
-    <link rel="icon" type="image/png" href="/icons/favicon-96x96.png" sizes="96x96" />
-    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" sizes="180x180" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-title" content="nØthing" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="application-name" content="nØthing" />
-    <link rel="manifest" href="/manifest.json" />
-
-    
-    
-
-    
-        <link rel="canonical" href="https://ghoooooost.com/posts/ai/codex_agent_loop/" />
-    
-
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "datePublished": "2026-01-27T12:00:00+08:00",
-        "dateModified": "2026-01-27T16:04:46+08:00",
-        "url": "https://ghoooooost.com/posts/ai/codex_agent_loop/",
-        "headline": "Codex 的 Agent Loop 是怎样构建的",
-        "description": "Agent Loop 是 Codex CLI 中的核心交互逻辑，负责协调用户、模型以及工具之间的交互，Codex 将其称为「harness」。\n",
-        "inLanguage" : "zh-CN",
-        "articleSection": "posts",
-        "wordCount":  4589 ,
-        "image": ["https://ghoooooost.com/pic/codex_agent_loop/20260126151103.png","https://ghoooooost.com/pic/codex_agent_loop/20260126153549.png","https://ghoooooost.com/pic/codex_agent_loop/20260126162544.png","https://ghoooooost.com/pic/codex_agent_loop/20260126162954.png","https://ghoooooost.com/pic/codex_agent_loop/20260126163311.png"],
-        "author": {
-            "@type": "Person",
-            "description": "Mortal after all.",
-            "email": "cghoooooost7@gmail.com",
-            "image": "https://ghoooooost.com/icons/apple-touch-icon.png",
-            "url": "https://ghoooooost.com/",
-            "name": "{Ø}"
-        },
-        "license": "[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)",
-        "publisher": {
-            "@type": "Organization",
-            "name": "nØthing",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "https://ghoooooost.com/icons/apple-touch-icon.png"
-            },
-            "url": "https://ghoooooost.com/"
-        },
-        "mainEntityOfPage": {
-            "@type": "WebSite",
-            "@id": "https://ghoooooost.com/"
-        }
-    }
-</script>
-
-    
-
-<meta name="twitter:card" content="summary_large_image" />
-
-
-
-    
-
-
-
-<meta property="og:title" content="Codex 的 Agent Loop 是怎样构建的" />
-<meta property="og:description" content="Agent Loop 是 Codex CLI 中的核心交互逻辑，负责协调用户、模型以及工具之间的交互，Codex 将其称为「harness」。
-" />
-<meta property="og:url" content="https://ghoooooost.com/posts/ai/codex_agent_loop/" />
-<meta property="og:site_name" content="nØthing" />
-<meta property="og:locale" content="zh-cn" /><meta property="og:image" content="https://ghoooooost.com/pic/codex_agent_loop/20260126151103.png" />
-<meta property="og:type" content="article" />
-    <meta property="article:published_time" content="2026-01-27T12:00:00&#43;08:00" />
-    <meta property="article:modified_time" content="2026-01-27T16:04:46&#43;08:00" />
-    
-    <meta property="article:section" content="posts" />
-
-
-
-    
-    
-
-    
-</head>
-
-    <body>
-        <div class="container">
-            
-    <header class="header">
-        
-            <div class="header-wrapper">
-                <div class="header-inner single">
-                    
-    <div class="site-brand">
-        
-            <a href="/" class="brand">nØthing</a>
-        
-    </div>
-
-                    <nav class="nav">
-    <ul class="menu" id="menu">
-        
-
-        
-            
-                <li class="menu-item"><a href="/posts/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon archive"><path d="M32 448c0 17.7 14.3 32 32 32h384c17.7 0 32-14.3 32-32V160H32v288zm160-212c0-6.6 5.4-12 12-12h104c6.6 0 12 5.4 12 12v8c0 6.6-5.4 12-12 12H204c-6.6 0-12-5.4-12-12v-8zM480 32H32C14.3 32 0 46.3 0 64v48c0 8.8 7.2 16 16 16h480c8.8 0 16-7.2 16-16V64c0-17.7-14.3-32-32-32z"/></svg><span class="menu-item-name">文章</span></a>
-                </li>
-            
-        
-            
-                <li class="menu-item"><a href="/categories/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon th"><path d="M149.333 56v80c0 13.255-10.745 24-24 24H24c-13.255 0-24-10.745-24-24V56c0-13.255 10.745-24 24-24h101.333c13.255 0 24 10.745 24 24zm181.334 240v-80c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.256 0 24.001-10.745 24.001-24zm32-240v80c0 13.255 10.745 24 24 24H488c13.255 0 24-10.745 24-24V56c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24zm-32 80V56c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.256 0 24.001-10.745 24.001-24zm-205.334 56H24c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24zM0 376v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H24c-13.255 0-24 10.745-24 24zm386.667-56H488c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24zm0 160H488c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24zM181.333 376v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24z"/></svg><span class="menu-item-name">分类</span></a>
-                </li>
-            
-        
-            
-                <li class="menu-item"><a href="/tags/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="icon tags"><path d="M497.941 225.941L286.059 14.059A48 48 0 0 0 252.118 0H48C21.49 0 0 21.49 0 48v204.118a48 48 0 0 0 14.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882 0l204.118-204.118c18.745-18.745 18.745-49.137 0-67.882zM112 160c-26.51 0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882 0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397 0h48.721a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882z"/></svg><span class="menu-item-name">标签</span></a>
-                </li>
-            
-        
-            
-                <li class="menu-item"><a href="/about/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" class="icon user-circle"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7 0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4 0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9 14.3 0 28-2.7 40.9-6.9 2.3-.7 4.7-1.1 7.1-1.1 42.9 0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"/></svg><span class="menu-item-name">关于</span></a>
-                </li>
-            
-        
-            
-                
-                    
-                    
-                        <li class="menu-item">
-                            <button id="theme-switcher" type="button" aria-label="切换主题"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-light"><path d="M193.2 104.5l48.8-97.5a18 18 0 0128 0l48.8 97.5 103.4 -34.5a18 18 0 0119.8 19.8l-34.5 103.4l97.5 48.8a18 18 0 010 28l-97.5 48.8 34.5 103.4a18 18 0 01-19.8 19.8l-103.4-34.5-48.8 97.5a18 18 0 01-28 0l-48.8-97.5l-103.4 34.5a18 18 0 01-19.8-19.8l34.5-103.4-97.5-48.8a18 18 0 010-28l97.5-48.8-34.5-103.4a18 18 0 0119.8-19.8zM256 128a128 128 0 10.01 0M256 160a96 96 0 10.01 0"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-dark"><path d="M27 412a256 256 0 10154-407a11.5 11.5 0 00-5 20a201.5 201.5 0 01-134 374a11.5 11.5 0 00-15 13"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="icon theme-icon-system"><path d="M528 0H48C21.5 0 0 21.5 0 48v320c0 26.5 21.5 48 48 48h192l-16 48h-72c-13.3 0-24 10.7-24 24s10.7 24 24 24h272c13.3 0 24-10.7 24-24s-10.7-24-24-24h-72l-16-48h192c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm-16 352H64V64h448v288z"/></svg></button>
-                        </li>
-                    
-                
-            
-        
-            
-                
-            
-        
-    </ul>
-</nav>
-
-                    
-                </div>
-            </div>
-            
-    <input type="checkbox" id="nav-toggle" aria-hidden="true" />
-    <label for="nav-toggle" class="nav-toggle"></label>
-    <label for="nav-toggle" class="nav-curtain"></label>
-
-
-        
-    </header>
-
-
-
-
-            
-            
-    <main class="main single" id="main">
-    <div class="main-inner">
-
-        
-
-        <article class="content post h-entry" data-align="justify" data-type="posts" data-toc-num="true">
-
-            <h1 class="post-title p-name">Codex 的 Agent Loop 是怎样构建的</h1>
-
-            
-
-            
-                
-            
-
-            
-                
-
-<div class="post-meta">
-    
-        
-        <time datetime="2026-01-27T12:00:00&#43;08:00" class="post-meta-item published dt-published"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;2026.1.27</time>
-    
-    
-    
-    
-        
-        
-        
-            
-                <span class="post-meta-item category"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>&nbsp;<a href="/categories/ai/" class="category-link p-category">AI</a></span>
-            
-        
-    
-    
-    
-    
-    
-</div>
-
-            
-
-            <nav class="contents">
-  <h2 id="contents" class="contents-title">目录</h2><ol class="toc">
-    <li><a id="contents:agent-loop" href="#agent-loop">Agent Loop</a></li>
-    <li><a id="contents:模型推理" href="#模型推理">模型推理</a>
-      <ol>
-        <li><a id="contents:构建初始化提示" href="#构建初始化提示">构建初始化提示</a>
-          <ol>
-            <li><a id="contents:instructions" href="#instructions">instructions</a></li>
-            <li><a id="contents:tools" href="#tools">tools</a></li>
-            <li><a id="contents:input" href="#input">input</a></li>
-          </ol>
-        </li>
-        <li><a id="contents:第一轮" href="#第一轮">第一轮</a></li>
-        <li><a id="contents:性能考量" href="#性能考量">性能考量</a></li>
-      </ol>
-    </li>
-  </ol>
-</nav><div class="post-body e-content">
-                <p>Agent Loop 是 Codex CLI 中的核心交互逻辑，负责协调用户、模型以及工具之间的交互，Codex 将其称为「harness」。</p>
-<h2 id="agent-loop"><a href="#agent-loop" class="anchor-link" aria-label="agent-loop"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:agent-loop" class="headings">Agent Loop</a></h2>
-<p>每个 AI Agent 的核心都有一个被称为 Agent Loop 的机制。Agent Loop 的简化示意图如下所示：
-<img src="/pic/codex_agent_loop/20260126151103.png" alt="20260126151103">
-首先，Agent 从用户那里获取输入，将其纳入为模型准备的文本指令集合中，这被称为提示词（prompt)。</p>
-<p>下一步是向模型发送指令并请求其生成响应来查询它，这个过程称为推理（inference）。在推理过程中，文本提示首先被转化为一系列输入令牌（input tokens）——即用于索引模型词汇表的整数。这些令牌随后被用于对模型进行采样，从而生成新的输出令牌（output tokens）。</p>
-<p>输出令牌（output tokens）被转换回文本，成为模型的响应（response）。由于令牌是逐步生成的，这种转换可以在模型运行时同步进行，这也是许多基于 LLM 的应用程序能显示流式输出的原因。实际上，推理过程通常被封装在一个基于文本操作的 API 之后，从而抽象了令牌化的具体细节。</p>
-<p>推理步骤的结果有两种情况：</p>
-<ol>
-<li>生成对用户原始输入的最终回复</li>
-<li>请求执行一次工具调用（例如，“运行 <code>ls</code> 并报告输出结果”）</li>
-</ol>
-<p>在情况 2 中，Agent 会执行该工具调用，并将输出结果追加到原始提示中。此输出用于生成一个新的输入，进而重新查询模型；Agent 随后可考虑这一新信息并再次尝试。</p>
-<p>这个过程会重复进行，直到模型停止生成工具调用，转而生成一条面向用户的消息（在 OpenAI 的模型中称之为“助手消息”（assistant message））。</p>
-<p>在许多情况下，这条消息会直接回应用户的原始请求，但也可能是向用户提出的后续问题。</p>
-<p>由于 Agent 能够执行修改本地环境的工具调用，其“输出”并不限于助手消息。在许多情况下，Agent 的主要输出是在机器上编写或编辑的代码。</p>
-<p>尽管如此，每个轮次总是以一条助手消息（例如“我已添加了您请求的 <code>architecture.md</code> ”）结束，这标志着 Agent Loop 的终止状态。从 Agent 的角度来看，其工作已完成，控制权将返回给用户。</p>
-<p>从用户输入到 Agent 响应的过程，如示意图所示，称为对话的一个轮次（在 Codex 中称为一个线程）。</p>
-<p>这个对话轮次可能涉及模型推断与工具调用之间的多次迭代。每当您向现有对话发送新消息时，对话历史会作为新轮次提示的一部分被包含，其中包括先前轮次的消息和工具调用。</p>
-<p><img src="/pic/codex_agent_loop/20260126153549.png" alt="20260126153549"></p>
-<p>这意味着随着对话的增多，用于模型采样的提示长度也会增加。这一长度至关重要，因为每个模型都有一个上下文窗口（context window），即一次推理调用所能使用的最大令牌数。需要注意的是，这个窗口既包括输入令牌也包括输出令牌。可以想象为，一个 Agent 可能决定在一轮对话中调用数百个工具，从而耗尽上下文窗口。因此，<strong>管理上下文窗口是 Agent 的众多职责之一</strong>。</p>
-<p>接下来，开始深入了解 Codex 是如何运行 Agent Loop 的。</p>
-<h2 id="模型推理"><a href="#模型推理" class="anchor-link" aria-label="模型推理"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:模型推理" class="headings">模型推理</a></h2>
-<p>Codex CLI 通过向 Responses API⁠ 发送 HTTP 请求来运行模型推理（Model inference），它能与任何实现 Responses API⁠ 的端点协同工作：</p>
-<ul>
-<li>使用 ChatGPT 登录</li>
-<li>使用 API 密钥</li>
-<li>本地 oss 模型</li>
-<li>云端提供商（如 Azure）</li>
-</ul>
-<h3 id="构建初始化提示"><a href="#构建初始化提示" class="anchor-link" aria-label="构建初始化提示"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:构建初始化提示" class="headings">构建初始化提示</a></h3>
-<p>作为终端用户，在使用 Responses API 时<strong>无需一字不差</strong>地指定用于采样模型的提示词。相反，可以将各种输入类型指定为查询的一部分，而 Responses API 服务器则负责决定如何将这些信息组织成模型设计所适用的提示。</p>
-<p>可以视提示词为一个“项目列表”，本节将解释查询如何被转化为这个列表。</p>
-<p>在初始化提示中，列表中的每一项都与一个角色（role）相关联。角色指明了关联内容的重要程度，其值按优先级递减顺序如下：系统、开发者、用户、助手。</p>
-<p>Responses API 接收一个包含众多参数的 JSON 载荷。重点关注以下三个参数：</p>
-<ul>
-<li><code>instructions</code> ⁠: 插入模型上下文中的系统（或开发者）消息</li>
-<li><code>tools</code> ：模型生成响应时可调用的一系列工具列表</li>
-<li><code>input</code> ⁠：模型接收的文本、图像或文件输入列表</li>
-</ul>
-<h4 id="instructions"><a href="#instructions" class="anchor-link" aria-label="instructions"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:instructions" class="headings">instructions</a></h4>
-<p>在 Codex 中， <code>instructions</code> 字段若指定则从 <code>~/.codex/config.toml</code> 中的 <code>model_instructions_file</code> ⁠读取；否则就使用与模型⁠关联的 <code>base_instructions</code> 。<code>base_instructions</code> 存放于 Codex 代码库中，并已打包进了 CLI（如 <code>gpt-5.2-codex_prompt.md</code> ⁠）中。</p>
-<h4 id="tools"><a href="#tools" class="anchor-link" aria-label="tools"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:tools" class="headings">tools</a></h4>
-<p><code>tools</code> 字段是符合 Responses API 定义架构的工具定义列表。对于 Codex 而言，这包括由 Codex CLI 提供的工具、由 Responses API 提供并供 Codex 使用的工具，以及通过 MCP 服务器由用户提供的工具：</p>
-<div class="highlight"><div class="chroma">
-<div class="table-container"><table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="p">[</span>
-</span></span><span class="line"><span class="cl">  <span class="c1">// Codex&#39;s default shell tool or spawning new processes locally.
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;function&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;name&#34;</span><span class="o">:</span> <span class="s2">&#34;shell&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;description&#34;</span><span class="o">:</span> <span class="s2">&#34;Runs a shell command and returns its output...&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;strict&#34;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;parameters&#34;</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;object&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="s2">&#34;properties&#34;</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="s2">&#34;command&#34;</span><span class="o">:</span> <span class="p">{</span><span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;array&#34;</span><span class="p">,</span> <span class="s2">&#34;description&#34;</span><span class="o">:</span> <span class="s2">&#34;The command to execute&#34;</span><span class="p">,</span> <span class="p">...},</span>
-</span></span><span class="line"><span class="cl">        <span class="s2">&#34;workdir&#34;</span><span class="o">:</span> <span class="p">{</span><span class="s2">&#34;description&#34;</span><span class="o">:</span> <span class="s2">&#34;The working directory...&#34;</span><span class="p">,</span> <span class="p">...},</span>
-</span></span><span class="line"><span class="cl">        <span class="s2">&#34;timeout_ms&#34;</span><span class="o">:</span> <span class="p">{</span><span class="s2">&#34;description&#34;</span><span class="o">:</span> <span class="s2">&#34;The timeout for the command...&#34;</span><span class="p">,</span> <span class="p">...},</span>
-</span></span><span class="line"><span class="cl">        <span class="p">...</span>
-</span></span><span class="line"><span class="cl">      <span class="p">},</span>
-</span></span><span class="line"><span class="cl">      <span class="s2">&#34;required&#34;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&#34;command&#34;</span><span class="p">],</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">  <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  <span class="c1">// Codex&#39;s built-in plan tool
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;function&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;name&#34;</span><span class="o">:</span> <span class="s2">&#34;update_plan&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;description&#34;</span><span class="o">:</span> <span class="s2">&#34;Updates the task plan...&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;strict&#34;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;parameters&#34;</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;object&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="s2">&#34;properties&#34;</span><span class="o">:</span> <span class="p">{</span><span class="s2">&#34;plan&#34;</span><span class="o">:</span><span class="p">...,</span> <span class="s2">&#34;explanation&#34;</span><span class="o">:</span><span class="p">...},</span>
-</span></span><span class="line"><span class="cl">      <span class="s2">&#34;required&#34;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&#34;plan&#34;</span><span class="p">]</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">  <span class="p">},</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  <span class="c1">// Web search tool provided by the Responses API.
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;web_search&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;external_web_access&#34;</span><span class="o">:</span> <span class="kc">false</span>
-</span></span><span class="line"><span class="cl">  <span class="p">},</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  <span class="c1">// MCP server for getting weather as configured in the
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// user&#39;s ~/.codex/config.toml.
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;function&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;name&#34;</span><span class="o">:</span> <span class="s2">&#34;mcp__weather__get-forecast&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;description&#34;</span><span class="o">:</span> <span class="s2">&#34;Get weather alerts for a US state&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;strict&#34;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;parameters&#34;</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;object&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="s2">&#34;properties&#34;</span><span class="o">:</span> <span class="p">{</span><span class="s2">&#34;latitude&#34;</span><span class="o">:</span> <span class="p">{...},</span> <span class="s2">&#34;longitude&#34;</span><span class="o">:</span> <span class="p">{...}},</span>
-</span></span><span class="line"><span class="cl">      <span class="s2">&#34;required&#34;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&#34;latitude&#34;</span><span class="p">,</span> <span class="s2">&#34;longitude&#34;</span><span class="p">]</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">  <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">]</span>
-</span></span></code></pre></td></tr></table></div>
-</div>
-</div><h4 id="input"><a href="#input" class="anchor-link" aria-label="input"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:input" class="headings">input</a></h4>
-<p>最后的 <code>input</code> 字段是一个项目列表。在添加用户消息之前，会先将以下项目⁠插入到 <code>input</code> 中：</p>
-<ol>
-<li>
-<p>一条包含 <code>role=developer</code> 的消息，描述仅适用于 Codex 提供的在 <code>tools</code> 部分定义的 <code>shell</code> 工具的沙箱环境。也就是说，其他工具（例如来自 MCP 服务器提供的工具）不由 Codex 进行沙箱处理，需要自行实施防护措施。</p>
-<p>该信息是基于一个模板构建的，其中的关键内容片段来自捆绑到 Codex CLI 中的 Markdown 片段，例如 <code>workspace_write.md</code> ⁠ 和 <code>on_request.md</code> ⁠：</p>
-<pre tabindex="0"><code>&lt;permissions instructions&gt;
+<!doctype html><html lang=zh-CN><head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#"><meta charset=UTF-8><meta name=generator content="Hugo 0.161.1"><meta name=theme-color content="#fff"><meta name=color-scheme content="light dark"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=format-detection content="telephone=no, date=no, address=no, email=no"><meta http-equiv=Cache-Control content="no-transform"><meta http-equiv=Cache-Control content="no-siteapp"><title>Codex 的 Agent Loop 是怎样构建的 | nØthing</title><link rel=stylesheet href=/css/meme.min.623b2633c1db6e303d7c63f758255749a278c034cfe6e6e6e8367ab74cb82059.css><script src=/js/meme.min.60c9607187770974b0557afb656b9af66524f1e2b096396869a2dc23e13bde45.js></script><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&amp;family=Source+Code+Pro:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" media=print onload='this.media="all"'><noscript><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&amp;family=Source+Code+Pro:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap"></noscript><meta name=author content="{Ø}"><meta name=description content="Agent Loop 是 Codex CLI 中的核心交互逻辑，负责协调用户、模型以及工具之间的交互，Codex 将其称为「harness」。
+"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/svg+xml href=/icons/favicon.svg><link rel=icon type=image/png href=/icons/favicon-96x96.png sizes=96x96><link rel=apple-touch-icon href=/icons/apple-touch-icon.png sizes=180x180><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-title content="nØthing"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta name=mobile-web-app-capable content="yes"><meta name=application-name content="nØthing"><link rel=manifest href=/manifest.json><link rel=canonical href=https://ghoooooost.com/posts/ai/codex_agent_loop/><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","datePublished":"2026-01-27T12:00:00+08:00","dateModified":"2026-01-27T16:05:15+08:00","url":"https://ghoooooost.com/posts/ai/codex_agent_loop/","headline":"Codex 的 Agent Loop 是怎样构建的","description":"Agent Loop 是 Codex CLI 中的核心交互逻辑，负责协调用户、模型以及工具之间的交互，Codex 将其称为「harness」。\n","inLanguage":"zh-CN","articleSection":"posts","wordCount":4589,"image":["https://ghoooooost.com/pic/codex_agent_loop/20260126151103.png","https://ghoooooost.com/pic/codex_agent_loop/20260126153549.png","https://ghoooooost.com/pic/codex_agent_loop/20260126162544.png","https://ghoooooost.com/pic/codex_agent_loop/20260126162954.png","https://ghoooooost.com/pic/codex_agent_loop/20260126163311.png"],"author":{"@type":"Person","description":"Mortal after all.","email":"cghoooooost7@gmail.com","image":"https://ghoooooost.com/icons/apple-touch-icon.png","url":"https://ghoooooost.com/","name":"{Ø}"},"license":"[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)","publisher":{"@type":"Organization","name":"nØthing","logo":{"@type":"ImageObject","url":"https://ghoooooost.com/icons/apple-touch-icon.png"},"url":"https://ghoooooost.com/"},"mainEntityOfPage":{"@type":"WebSite","@id":"https://ghoooooost.com/"}}</script><meta name=twitter:card content="summary_large_image"><meta property="og:title" content="Codex 的 Agent Loop 是怎样构建的"><meta property="og:description" content="Agent Loop 是 Codex CLI 中的核心交互逻辑，负责协调用户、模型以及工具之间的交互，Codex 将其称为「harness」。
+"><meta property="og:url" content="https://ghoooooost.com/posts/ai/codex_agent_loop/"><meta property="og:site_name" content="nØthing"><meta property="og:locale" content="zh-cn"><meta property="og:image" content="https://ghoooooost.com/pic/codex_agent_loop/20260126151103.png"><meta property="og:type" content="article"><meta property="article:published_time" content="2026-01-27T12:00:00+08:00"><meta property="article:modified_time" content="2026-01-27T16:05:15+08:00"><meta property="article:section" content="posts"></head><body><div class=container><header class=header><div class=header-wrapper><div class="header-inner single"><div class=site-brand><a href=/ class=brand>nØthing</a></div><nav class=nav><ul class=menu id=menu><li class=menu-item><a href=/posts/><svg viewBox="0 0 512 512" class="icon archive"><path d="M32 448c0 17.7 14.3 32 32 32h384c17.7.0 32-14.3 32-32V160H32v288zm160-212c0-6.6 5.4-12 12-12h104c6.6.0 12 5.4 12 12v8c0 6.6-5.4 12-12 12H204c-6.6.0-12-5.4-12-12v-8zM480 32H32C14.3 32 0 46.3.0 64v48c0 8.8 7.2 16 16 16h480c8.8.0 16-7.2 16-16V64c0-17.7-14.3-32-32-32z"/></svg><span class=menu-item-name>文章</span></a></li><li class=menu-item><a href=/categories/><svg viewBox="0 0 512 512" class="icon th"><path d="M149.333 56v80c0 13.255-10.745 24-24 24H24c-13.255.0-24-10.745-24-24V56c0-13.255 10.745-24 24-24h101.333c13.255.0 24 10.745 24 24zm181.334 240v-80c0-13.255-10.745-24-24-24H205.333c-13.255.0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.256.0 24.001-10.745 24.001-24zm32-240v80c0 13.255 10.745 24 24 24H488c13.255.0 24-10.745 24-24V56c0-13.255-10.745-24-24-24H386.667c-13.255.0-24 10.745-24 24zm-32 80V56c0-13.255-10.745-24-24-24H205.333c-13.255.0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.256.0 24.001-10.745 24.001-24zm-205.334 56H24c-13.255.0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.255.0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24zM0 376v80c0 13.255 10.745 24 24 24h101.333c13.255.0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H24c-13.255.0-24 10.745-24 24zm386.667-56H488c13.255.0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H386.667c-13.255.0-24 10.745-24 24v80c0 13.255 10.745 24 24 24zm0 160H488c13.255.0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H386.667c-13.255.0-24 10.745-24 24v80c0 13.255 10.745 24 24 24zM181.333 376v80c0 13.255 10.745 24 24 24h101.333c13.255.0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H205.333c-13.255.0-24 10.745-24 24z"/></svg><span class=menu-item-name>分类</span></a></li><li class=menu-item><a href=/tags/><svg viewBox="0 0 640 512" class="icon tags"><path d="M497.941 225.941 286.059 14.059A48 48 0 00252.118.0H48C21.49.0.0 21.49.0 48v204.118a48 48 0 0014.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882.0l204.118-204.118c18.745-18.745 18.745-49.137.0-67.882zM112 160c-26.51.0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882.0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397.0h48.721a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882z"/></svg><span class=menu-item-name>标签</span></a></li><li class=menu-item><a href=/about/><svg viewBox="0 0 496 512" class="icon user-circle"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6.0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7.0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4.0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9s28-2.7 40.9-6.9c2.3-.7 4.7-1.1 7.1-1.1 42.9.0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"/></svg><span class=menu-item-name>关于</span></a></li><li class=menu-item><button id=theme-switcher type=button aria-label=切换主题><svg viewBox="0 0 512 512" class="icon theme-icon-light"><path d="M193.2 104.5 242 7a18 18 0 0128 0l48.8 97.5L422.2 70A18 18 0 01442 89.8l-34.5 103.4L505 242a18 18 0 010 28l-97.5 48.8L442 422.2A18 18 0 01422.2 442l-103.4-34.5L270 505a18 18 0 01-28 0l-48.8-97.5L89.8 442A18 18 0 0170 422.2l34.5-103.4-97.5-48.8a18 18 0 010-28l97.5-48.8L70 89.8A18 18 0 0189.8 70zM256 128a128 128 0 10.01.0M256 160a96 96 0 10.01.0"/></svg><svg viewBox="0 0 512 512" class="icon theme-icon-dark"><path d="M27 412A256 256 0 10181 5a11.5 11.5.0 00-5 20A201.5 201.5.0 0142 399a11.5 11.5.0 00-15 13"/></svg><svg viewBox="0 0 576 512" class="icon theme-icon-system"><path d="M528 0H48C21.5.0.0 21.5.0 48v320c0 26.5 21.5 48 48 48h192l-16 48h-72c-13.3.0-24 10.7-24 24s10.7 24 24 24h272c13.3.0 24-10.7 24-24s-10.7-24-24-24h-72l-16-48h192c26.5.0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm-16 352H64V64h448v288z"/></svg></button></li></ul></nav></div></div><input type=checkbox id=nav-toggle aria-hidden=true>
+<label for=nav-toggle class=nav-toggle></label><label for=nav-toggle class=nav-curtain></label></header><main class="main single" id=main><div class=main-inner><article class="content post h-entry" data-align=justify data-type=posts data-toc-num=true><h1 class="post-title p-name">Codex 的 Agent Loop 是怎样构建的</h1><div class=post-meta><time datetime=2026-01-27T12:00:00+08:00 class="post-meta-item published dt-published"><svg viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M148 288h-40c-6.6.0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6.0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5.0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6.0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6.0 12 5.4 12 12v52h48c26.5.0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3.0 6-2.7 6-6z"/></svg>&nbsp;2026.1.27</time>
+<span class="post-meta-item category"><svg viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49.0 112v288c0 26.51 21.49 48 48 48h416c26.51.0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>&nbsp;<a href=/categories/ai/ class="category-link p-category">AI</a></span></div><nav class=contents><h2 id=contents class=contents-title>目录</h2><ol class=toc><li><a id=contents:agent-loop href=#agent-loop>Agent Loop</a></li><li><a id=contents:模型推理 href=#模型推理>模型推理</a><ol><li><a id=contents:构建初始化提示 href=#构建初始化提示>构建初始化提示</a><ol><li><a id=contents:instructions href=#instructions>instructions</a></li><li><a id=contents:tools href=#tools>tools</a></li><li><a id=contents:input href=#input>input</a></li></ol></li><li><a id=contents:第一轮 href=#第一轮>第一轮</a></li><li><a id=contents:性能考量 href=#性能考量>性能考量</a></li></ol></li></ol></nav><div class="post-body e-content"><p>Agent Loop 是 Codex CLI 中的核心交互逻辑，负责协调用户、模型以及工具之间的交互，Codex 将其称为「harness」。</p><h2 id=agent-loop><a href=#agent-loop class=anchor-link aria-label=agent-loop><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href=#contents:agent-loop class=headings>Agent Loop</a></h2><p>每个 AI Agent 的核心都有一个被称为 Agent Loop 的机制。Agent Loop 的简化示意图如下所示：</p><p><img src=/pic/codex_agent_loop/20260126151103.png alt=20260126151103></p><p>首先，Agent 从用户那里获取输入，将其纳入为模型准备的文本指令集合中，这被称为提示词（prompt)。</p><p>下一步是向模型发送指令并请求其生成响应来查询它，这个过程称为推理（inference）。在推理过程中，文本提示首先被转化为一系列输入令牌（input tokens）——即用于索引模型词汇表的整数。这些令牌随后被用于对模型进行采样，从而生成新的输出令牌（output tokens）。</p><p>输出令牌（output tokens）被转换回文本，成为模型的响应（response）。由于令牌是逐步生成的，这种转换可以在模型运行时同步进行，这也是许多基于 LLM 的应用程序能显示流式输出的原因。实际上，推理过程通常被封装在一个基于文本操作的 API 之后，从而抽象了令牌化的具体细节。</p><p>推理步骤的结果有两种情况：</p><ol><li>生成对用户原始输入的最终回复</li><li>请求执行一次工具调用（例如，“运行 <code>ls</code> 并报告输出结果”）</li></ol><p>在情况 2 中，Agent 会执行该工具调用，并将输出结果追加到原始提示中。此输出用于生成一个新的输入，进而重新查询模型；Agent 随后可考虑这一新信息并再次尝试。</p><p>这个过程会重复进行，直到模型停止生成工具调用，转而生成一条面向用户的消息（在 OpenAI 的模型中称之为“助手消息”（assistant message））。</p><p>在许多情况下，这条消息会直接回应用户的原始请求，但也可能是向用户提出的后续问题。</p><p>由于 Agent 能够执行修改本地环境的工具调用，其“输出”并不限于助手消息。在许多情况下，Agent 的主要输出是在机器上编写或编辑的代码。</p><p>尽管如此，每个轮次总是以一条助手消息（例如“我已添加了您请求的 <code>architecture.md</code> ”）结束，这标志着 Agent Loop 的终止状态。从 Agent 的角度来看，其工作已完成，控制权将返回给用户。</p><p>从用户输入到 Agent 响应的过程，如示意图所示，称为对话的一个轮次（在 Codex 中称为一个线程）。</p><p>这个对话轮次可能涉及模型推断与工具调用之间的多次迭代。每当您向现有对话发送新消息时，对话历史会作为新轮次提示的一部分被包含，其中包括先前轮次的消息和工具调用。</p><p><img src=/pic/codex_agent_loop/20260126153549.png alt=20260126153549></p><p>这意味着随着对话的增多，用于模型采样的提示长度也会增加。这一长度至关重要，因为每个模型都有一个上下文窗口（context window），即一次推理调用所能使用的最大令牌数。需要注意的是，这个窗口既包括输入令牌也包括输出令牌。可以想象为，一个 Agent 可能决定在一轮对话中调用数百个工具，从而耗尽上下文窗口。因此，<strong>管理上下文窗口是 Agent 的众多职责之一</strong>。</p><p>接下来，开始深入了解 Codex 是如何运行 Agent Loop 的。</p><h2 id=模型推理><a href=#模型推理 class=anchor-link aria-label=模型推理><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href=#contents:模型推理 class=headings>模型推理</a></h2><p>Codex CLI 通过向 Responses API⁠ 发送 HTTP 请求来运行模型推理（Model inference），它能与任何实现 Responses API⁠ 的端点协同工作：</p><ul><li>使用 ChatGPT 登录</li><li>使用 API 密钥</li><li>本地 oss 模型</li><li>云端提供商（如 Azure）</li></ul><h3 id=构建初始化提示><a href=#构建初始化提示 class=anchor-link aria-label=构建初始化提示><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href=#contents:构建初始化提示 class=headings>构建初始化提示</a></h3><p>作为终端用户，在使用 Responses API 时<strong>无需一字不差</strong>地指定用于采样模型的提示词。相反，可以将各种输入类型指定为查询的一部分，而 Responses API 服务器则负责决定如何将这些信息组织成模型设计所适用的提示。</p><p>可以视提示词为一个“项目列表”，本节将解释查询如何被转化为这个列表。</p><p>在初始化提示中，列表中的每一项都与一个角色（role）相关联。角色指明了关联内容的重要程度，其值按优先级递减顺序如下：系统、开发者、用户、助手。</p><p>Responses API 接收一个包含众多参数的 JSON 载荷。重点关注以下三个参数：</p><ul><li><code>instructions</code> ⁠: 插入模型上下文中的系统（或开发者）消息</li><li><code>tools</code> ：模型生成响应时可调用的一系列工具列表</li><li><code>input</code> ⁠：模型接收的文本、图像或文件输入列表</li></ul><h4 id=instructions><a href=#instructions class=anchor-link aria-label=instructions><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href=#contents:instructions class=headings>instructions</a></h4><p>在 Codex 中， <code>instructions</code> 字段若指定则从 <code>~/.codex/config.toml</code> 中的 <code>model_instructions_file</code> ⁠读取；否则就使用与模型⁠关联的 <code>base_instructions</code> 。<code>base_instructions</code> 存放于 Codex 代码库中，并已打包进了 CLI（如 <code>gpt-5.2-codex_prompt.md</code> ⁠）中。</p><h4 id=tools><a href=#tools class=anchor-link aria-label=tools><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href=#contents:tools class=headings>tools</a></h4><p><code>tools</code> 字段是符合 Responses API 定义架构的工具定义列表。对于 Codex 而言，这包括由 Codex CLI 提供的工具、由 Responses API 提供并供 Codex 使用的工具，以及通过 MCP 服务器由用户提供的工具：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=p>[</span>
+</span></span><span class=line><span class=cl>  <span class=c1>// Codex&#39;s default shell tool or spawning new processes locally.
+</span></span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;type&#34;</span><span class=o>:</span> <span class=s2>&#34;function&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;name&#34;</span><span class=o>:</span> <span class=s2>&#34;shell&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;description&#34;</span><span class=o>:</span> <span class=s2>&#34;Runs a shell command and returns its output...&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;strict&#34;</span><span class=o>:</span> <span class=kc>false</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;parameters&#34;</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=s2>&#34;type&#34;</span><span class=o>:</span> <span class=s2>&#34;object&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=s2>&#34;properties&#34;</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;command&#34;</span><span class=o>:</span> <span class=p>{</span><span class=s2>&#34;type&#34;</span><span class=o>:</span> <span class=s2>&#34;array&#34;</span><span class=p>,</span> <span class=s2>&#34;description&#34;</span><span class=o>:</span> <span class=s2>&#34;The command to execute&#34;</span><span class=p>,</span> <span class=p>...},</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;workdir&#34;</span><span class=o>:</span> <span class=p>{</span><span class=s2>&#34;description&#34;</span><span class=o>:</span> <span class=s2>&#34;The working directory...&#34;</span><span class=p>,</span> <span class=p>...},</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;timeout_ms&#34;</span><span class=o>:</span> <span class=p>{</span><span class=s2>&#34;description&#34;</span><span class=o>:</span> <span class=s2>&#34;The timeout for the command...&#34;</span><span class=p>,</span> <span class=p>...},</span>
+</span></span><span class=line><span class=cl>        <span class=p>...</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=s2>&#34;required&#34;</span><span class=o>:</span> <span class=p>[</span><span class=s2>&#34;command&#34;</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=c1>// Codex&#39;s built-in plan tool
+</span></span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;type&#34;</span><span class=o>:</span> <span class=s2>&#34;function&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;name&#34;</span><span class=o>:</span> <span class=s2>&#34;update_plan&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;description&#34;</span><span class=o>:</span> <span class=s2>&#34;Updates the task plan...&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;strict&#34;</span><span class=o>:</span> <span class=kc>false</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;parameters&#34;</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=s2>&#34;type&#34;</span><span class=o>:</span> <span class=s2>&#34;object&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=s2>&#34;properties&#34;</span><span class=o>:</span> <span class=p>{</span><span class=s2>&#34;plan&#34;</span><span class=o>:</span><span class=p>...,</span> <span class=s2>&#34;explanation&#34;</span><span class=o>:</span><span class=p>...},</span>
+</span></span><span class=line><span class=cl>      <span class=s2>&#34;required&#34;</span><span class=o>:</span> <span class=p>[</span><span class=s2>&#34;plan&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=c1>// Web search tool provided by the Responses API.
+</span></span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;type&#34;</span><span class=o>:</span> <span class=s2>&#34;web_search&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;external_web_access&#34;</span><span class=o>:</span> <span class=kc>false</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=c1>// MCP server for getting weather as configured in the
+</span></span></span><span class=line><span class=cl>  <span class=c1>// user&#39;s ~/.codex/config.toml.
+</span></span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;type&#34;</span><span class=o>:</span> <span class=s2>&#34;function&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;name&#34;</span><span class=o>:</span> <span class=s2>&#34;mcp__weather__get-forecast&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;description&#34;</span><span class=o>:</span> <span class=s2>&#34;Get weather alerts for a US state&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;strict&#34;</span><span class=o>:</span> <span class=kc>false</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;parameters&#34;</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=s2>&#34;type&#34;</span><span class=o>:</span> <span class=s2>&#34;object&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=s2>&#34;properties&#34;</span><span class=o>:</span> <span class=p>{</span><span class=s2>&#34;latitude&#34;</span><span class=o>:</span> <span class=p>{...},</span> <span class=s2>&#34;longitude&#34;</span><span class=o>:</span> <span class=p>{...}},</span>
+</span></span><span class=line><span class=cl>      <span class=s2>&#34;required&#34;</span><span class=o>:</span> <span class=p>[</span><span class=s2>&#34;latitude&#34;</span><span class=p>,</span> <span class=s2>&#34;longitude&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>]</span>
+</span></span></code></pre></td></tr></table></div></div></div><h4 id=input><a href=#input class=anchor-link aria-label=input><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href=#contents:input class=headings>input</a></h4><p>最后的 <code>input</code> 字段是一个项目列表。在添加用户消息之前，会先将以下项目⁠插入到 <code>input</code> 中：</p><ol><li><p>一条包含 <code>role=developer</code> 的消息，描述仅适用于 Codex 提供的在 <code>tools</code> 部分定义的 <code>shell</code> 工具的沙箱环境。也就是说，其他工具（例如来自 MCP 服务器提供的工具）不由 Codex 进行沙箱处理，需要自行实施防护措施。</p><p>该信息是基于一个模板构建的，其中的关键内容片段来自捆绑到 Codex CLI 中的 Markdown 片段，例如 <code>workspace_write.md</code> ⁠ 和 <code>on_request.md</code> ⁠：</p><pre tabindex=0><code>&lt;permissions instructions&gt;
   - description of the sandbox explaining file permissions and network access
   - instructions for when to ask the user for permissions to run a shell command
   - list of folders writable by Codex, if any
 &lt;/permissions instructions&gt;
-</code></pre></li>
-<li>
-<p>（可选）一条包含 <code>role=developer</code> 的消息，其内容是从用户 <code>config.toml</code> 文件中读取的 <code>developer_instructions</code> 值。</p>
-</li>
-<li>
-<p>（可选）一条包含 <code>role=user</code> 的消息，其内容为“用户指令”，这些指令并非源自单一文件，而是整合自多个来源⁠。通常，更具体的指令会出现在后面：</p>
-<ul>
-<li><code>AGENTS.override.md</code> 、 <code>AGENTS.md</code> 和 <code>$CODEX_HOME</code> 中的内容</li>
-<li>在默认限制（32 KiB）下，从项目的 <code>cwd</code> 根目录（如果存在）开始，逐级向上查找至 <code>cwd</code> 所在目录：添加其中任何 <code>AGENTS.override.md</code> 、 <code>AGENTS.md</code> 的内容，或由 <code>project_doc_fallback_filenames in config.toml</code> 指定的任何文件名</li>
-<li>如果配置有技能（Skill）：
-<ul>
-<li>一份关于技能的简短说明</li>
-<li>每个技能的元数据</li>
-<li>关于如何使用技能的部分</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>一条包含 <code>role=user</code> 的消息，用于描述当前运行 Agent 的本地环境。它指定了当前工作目录和用户使用的 shell⁠：</p>
-<pre tabindex="0"><code>&lt;environment_context&gt;
+</code></pre></li><li><p>（可选）一条包含 <code>role=developer</code> 的消息，其内容是从用户 <code>config.toml</code> 文件中读取的 <code>developer_instructions</code> 值。</p></li><li><p>（可选）一条包含 <code>role=user</code> 的消息，其内容为“用户指令”，这些指令并非源自单一文件，而是整合自多个来源⁠。通常，更具体的指令会出现在后面：</p><ul><li><code>AGENTS.override.md</code> 、 <code>AGENTS.md</code> 和 <code>$CODEX_HOME</code> 中的内容</li><li>在默认限制（32 KiB）下，从项目的 <code>cwd</code> 根目录（如果存在）开始，逐级向上查找至 <code>cwd</code> 所在目录：添加其中任何 <code>AGENTS.override.md</code> 、 <code>AGENTS.md</code> 的内容，或由 <code>project_doc_fallback_filenames in config.toml</code> 指定的任何文件名</li><li>如果配置有技能（Skill）：<ul><li>一份关于技能的简短说明</li><li>每个技能的元数据</li><li>关于如何使用技能的部分</li></ul></li></ul></li><li><p>一条包含 <code>role=user</code> 的消息，用于描述当前运行 Agent 的本地环境。它指定了当前工作目录和用户使用的 shell⁠：</p><pre tabindex=0><code>&lt;environment_context&gt;
   &lt;cwd&gt;/Users/mbolin/code/codex5&lt;/cwd&gt;
   &lt;shell&gt;zsh&lt;/shell&gt;
 &lt;/environment_context&gt;
-</code></pre></li>
-</ol>
-<p>在 Codex 完成上述所有计算以初始化 <code>input</code> 后，会附加用户消息以启动对话。</p>
-<p>之前的例子侧重于每条消息的内容，但请注意， <code>input</code> 的每个元素都是一个 JSON 对象，包含 <code>type</code> 、 <code>role</code> ⁠和 <code>content</code> ，如下所示：</p>
-<div class="highlight"><div class="chroma">
-<div class="table-container"><table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;message&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">  <span class="nt">&#34;role&#34;</span><span class="p">:</span> <span class="s2">&#34;user&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">  <span class="nt">&#34;content&#34;</span><span class="p">:</span> <span class="p">[</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;input_text&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;Add an architecture diagram to the README.md&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">  <span class="p">]</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table></div>
-</div>
-</div><p>一旦 Codex 构建好要发送给 Responses API 的完整 JSON 载荷，它就会根据 Responses API 端点在 <code>~/.codex/config.toml</code> 中的配置情况，使用对应的 <code>Authorization</code> 头部信息发起 HTTP POST 请求（如果指定了额外的 HTTP 头部和查询参数，也会一并添加）。</p>
-<p>当 OpenAI Responses API 服务器收到请求时，它会使用 JSON 数据来推导出模型的提示，如下所示（请注意，自定义实现的 Responses API 可能会做出不同的选择）：</p>
-<p><img src="/pic/codex_agent_loop/20260126162544.png" alt="20260126162544"></p>
-<p>可以看到，提示中前三个项目的顺序是由服务器决定的，而非客户端。但是在这三个项目中，只有系统消息的内容由服务器控制，因为 <code>tools</code> 和 <code>instructions</code> 是由客户端决定的。接着是来自 JSON 的有效载荷 <code>input</code> ，最终完成提示。</p>
-<p>现在已经有了提示，准备对模型进行采样。</p>
-<h3 id="第一轮"><a href="#第一轮" class="anchor-link" aria-label="第一轮"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:第一轮" class="headings">第一轮</a></h3>
-<p>这个向 Responses API 发出的 HTTP 请求启动了 Codex 中的第一轮“对话”。服务器会以 Server-Sent Events（SSE）流作为回复。</p>
-<p>每个事件的 <code>data</code> 都是一个 JSON 负载，包含一个 <code>&quot;type&quot;</code> ，以 <code>&quot;response&quot;</code> 开始，类似于这样：</p>
-<pre tabindex="0"><code>data: {&#34;type&#34;:&#34;response.reasoning_summary_text.delta&#34;,&#34;delta&#34;:&#34;ah &#34;, ...}
+</code></pre></li></ol><p>在 Codex 完成上述所有计算以初始化 <code>input</code> 后，会附加用户消息以启动对话。</p><p>之前的例子侧重于每条消息的内容，但请注意， <code>input</code> 的每个元素都是一个 JSON 对象，包含 <code>type</code> 、 <code>role</code> ⁠和 <code>content</code> ，如下所示：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;message&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;role&#34;</span><span class=p>:</span> <span class=s2>&#34;user&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;content&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;input_text&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;text&#34;</span><span class=p>:</span> <span class=s2>&#34;Add an architecture diagram to the README.md&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>一旦 Codex 构建好要发送给 Responses API 的完整 JSON 载荷，它就会根据 Responses API 端点在 <code>~/.codex/config.toml</code> 中的配置情况，使用对应的 <code>Authorization</code> 头部信息发起 HTTP POST 请求（如果指定了额外的 HTTP 头部和查询参数，也会一并添加）。</p><p>当 OpenAI Responses API 服务器收到请求时，它会使用 JSON 数据来推导出模型的提示，如下所示（请注意，自定义实现的 Responses API 可能会做出不同的选择）：</p><p><img src=/pic/codex_agent_loop/20260126162544.png alt=20260126162544></p><p>可以看到，提示中前三个项目的顺序是由服务器决定的，而非客户端。但是在这三个项目中，只有系统消息的内容由服务器控制，因为 <code>tools</code> 和 <code>instructions</code> 是由客户端决定的。接着是来自 JSON 的有效载荷 <code>input</code> ，最终完成提示。</p><p>现在已经有了提示，准备对模型进行采样。</p><h3 id=第一轮><a href=#第一轮 class=anchor-link aria-label=第一轮><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href=#contents:第一轮 class=headings>第一轮</a></h3><p>这个向 Responses API 发出的 HTTP 请求启动了 Codex 中的第一轮“对话”。服务器会以 Server-Sent Events（SSE）流作为回复。</p><p>每个事件的 <code>data</code> 都是一个 JSON 负载，包含一个 <code>"type"</code> ，以 <code>"response"</code> 开始，类似于这样：</p><pre tabindex=0><code>data: {&#34;type&#34;:&#34;response.reasoning_summary_text.delta&#34;,&#34;delta&#34;:&#34;ah &#34;, ...}
 data: {&#34;type&#34;:&#34;response.reasoning_summary_text.delta&#34;,&#34;delta&#34;:&#34;ha!&#34;, ...}
 data: {&#34;type&#34;:&#34;response.reasoning_summary_text.done&#34;, &#34;item_id&#34;:...}
 data: {&#34;type&#34;:&#34;response.output_item.added&#34;, &#34;item&#34;:{...}}
 data: {&#34;type&#34;:&#34;response.output_text.delta&#34;, &#34;delta&#34;:&#34;forty-&#34;, ...}
 data: {&#34;type&#34;:&#34;response.output_text.delta&#34;, &#34;delta&#34;:&#34;two!&#34;, ...}
 data: {&#34;type&#34;:&#34;response.completed&#34;,&#34;response&#34;:{...}}
-</code></pre><p>Codex 接收事件流并将其作为内部事件对象重新发布，供客户端使用。</p>
-<p>像 <code>response.output_text.delta</code> 这样的事件用于支持 UI 中的流式传输。</p>
-<p>而像 <code>response.output_item.added</code> 这样的其他事件则被转换为对象并追加到 <code>input</code> 中，供后续的 Responses API 调用使用。</p>
-<p>假设对 Responses API 的首次请求包含两个 <code>response.output_item.done</code> 事件：一个带有 <code>type=reasoning</code> ，另一个带有 <code>type=function_call</code> 。当使用工具调用的响应再次查询模型时，这些事件必须体现在 JSON 的 <code>input</code> 字段中：</p>
-<div class="highlight"><div class="chroma">
-<div class="table-container"><table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="p">[</span>
-</span></span><span class="line"><span class="cl">  <span class="cm">/* ... original 5 items from the input array ... */</span>
-</span></span><span class="line"><span class="cl">  <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;reasoning&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;summary&#34;</span><span class="o">:</span> <span class="p">[</span>
-</span></span><span class="line"><span class="cl">      <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;summary_text&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="s2">&#34;text&#34;</span><span class="o">:</span> <span class="s2">&#34;**Adding an architecture diagram for README.md**\n\nI need to...&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">],</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;encrypted_content&#34;</span><span class="o">:</span> <span class="s2">&#34;gAAAAABpaDWNMxMeLw...&#34;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">},</span>
-</span></span><span class="line"><span class="cl">  <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;function_call&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;name&#34;</span><span class="o">:</span> <span class="s2">&#34;shell&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;arguments&#34;</span><span class="o">:</span> <span class="s2">&#34;{\&#34;command\&#34;:\&#34;cat README.md\&#34;,\&#34;workdir\&#34;:\&#34;/Users/mbolin/code/codex5\&#34;}&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;call_id&#34;</span><span class="o">:</span> <span class="s2">&#34;call_8675309...&#34;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">},</span>
-</span></span><span class="line"><span class="cl">  <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;function_call_output&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;call_id&#34;</span><span class="o">:</span> <span class="s2">&#34;call_8675309...&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;output&#34;</span><span class="o">:</span> <span class="s2">&#34;&lt;p align=\&#34;center\&#34;&gt;&lt;code&gt;npm i -g @openai/codex&lt;/code&gt;...&#34;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">]</span>
-</span></span></code></pre></td></tr></table></div>
-</div>
-</div><p>用于采样模型作为后续查询一部分的提示词最终形式如下：</p>
-<p><img src="/pic/codex_agent_loop/20260126162954.png" alt="20260126162954"></p>
-<p>特别是要注意，旧提示词是新提示词的精确前缀。这是有意为之的，能充分利用提示缓存，从而大幅提高后续的请求效率。</p>
-<p>回顾最初绘制的 Agent Loop 图，可以看到推理与工具调用之间可能存在多次迭代过程。提示信息会持续累积，直到最终接收到助手消息——这标志着当前回合的结束。</p>
-<pre tabindex="0"><code>data: {&#34;type&#34;:&#34;response.output_text.done&#34;,&#34;text&#34;: &#34;I added a diagram to explain...&#34;, ...}
+</code></pre><p>Codex 接收事件流并将其作为内部事件对象重新发布，供客户端使用。</p><p>像 <code>response.output_text.delta</code> 这样的事件用于支持 UI 中的流式传输。</p><p>而像 <code>response.output_item.added</code> 这样的其他事件则被转换为对象并追加到 <code>input</code> 中，供后续的 Responses API 调用使用。</p><p>假设对 Responses API 的首次请求包含两个 <code>response.output_item.done</code> 事件：一个带有 <code>type=reasoning</code> ，另一个带有 <code>type=function_call</code> 。当使用工具调用的响应再次查询模型时，这些事件必须体现在 JSON 的 <code>input</code> 字段中：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=p>[</span>
+</span></span><span class=line><span class=cl>  <span class=cm>/* ... original 5 items from the input array ... */</span>
+</span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;type&#34;</span><span class=o>:</span> <span class=s2>&#34;reasoning&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;summary&#34;</span><span class=o>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>      <span class=s2>&#34;type&#34;</span><span class=o>:</span> <span class=s2>&#34;summary_text&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=s2>&#34;text&#34;</span><span class=o>:</span> <span class=s2>&#34;**Adding an architecture diagram for README.md**\n\nI need to...&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>],</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;encrypted_content&#34;</span><span class=o>:</span> <span class=s2>&#34;gAAAAABpaDWNMxMeLw...&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;type&#34;</span><span class=o>:</span> <span class=s2>&#34;function_call&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;name&#34;</span><span class=o>:</span> <span class=s2>&#34;shell&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;arguments&#34;</span><span class=o>:</span> <span class=s2>&#34;{\&#34;command\&#34;:\&#34;cat README.md\&#34;,\&#34;workdir\&#34;:\&#34;/Users/mbolin/code/codex5\&#34;}&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;call_id&#34;</span><span class=o>:</span> <span class=s2>&#34;call_8675309...&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;type&#34;</span><span class=o>:</span> <span class=s2>&#34;function_call_output&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;call_id&#34;</span><span class=o>:</span> <span class=s2>&#34;call_8675309...&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;output&#34;</span><span class=o>:</span> <span class=s2>&#34;&lt;p align=\&#34;center\&#34;&gt;&lt;code&gt;npm i -g @openai/codex&lt;/code&gt;...&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>]</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>用于采样模型作为后续查询一部分的提示词最终形式如下：</p><p><img src=/pic/codex_agent_loop/20260126162954.png alt=20260126162954></p><p>特别是要注意，旧提示词是新提示词的精确前缀。这是有意为之的，能充分利用提示缓存，从而大幅提高后续的请求效率。</p><p>回顾最初绘制的 Agent Loop 图，可以看到推理与工具调用之间可能存在多次迭代过程。提示信息会持续累积，直到最终接收到助手消息——这标志着当前回合的结束。</p><pre tabindex=0><code>data: {&#34;type&#34;:&#34;response.output_text.done&#34;,&#34;text&#34;: &#34;I added a diagram to explain...&#34;, ...}
 data: {&#34;type&#34;:&#34;response.completed&#34;,&#34;response&#34;:{...}}
-</code></pre><p>Codex CLI 会向用户展示助手消息并聚焦到输入框，向用户示意轮到他们&quot;继续对话&quot;。如果用户作出回应，前一轮的助手消息和用户的新消息都必须追加到 Responses API 请求的 <code>input</code> 中，以开启新一轮对话：</p>
-<div class="highlight"><div class="chroma">
-<div class="table-container"><table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="p">[</span>
-</span></span><span class="line"><span class="cl">  <span class="cm">/* ... all items from the last Responses API request ... */</span>
-</span></span><span class="line"><span class="cl">  <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;message&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;role&#34;</span><span class="o">:</span> <span class="s2">&#34;assistant&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;content&#34;</span><span class="o">:</span> <span class="p">[</span>
-</span></span><span class="line"><span class="cl">      <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;output_text&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="s2">&#34;text&#34;</span><span class="o">:</span> <span class="s2">&#34;I added a diagram to explain the client/server architecture.&#34;</span>
-</span></span><span class="line"><span class="cl">      <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="p">]</span>
-</span></span><span class="line"><span class="cl">  <span class="p">},</span>
-</span></span><span class="line"><span class="cl">  <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;message&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;role&#34;</span><span class="o">:</span> <span class="s2">&#34;user&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;content&#34;</span><span class="o">:</span> <span class="p">[</span>
-</span></span><span class="line"><span class="cl">      <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="s2">&#34;type&#34;</span><span class="o">:</span> <span class="s2">&#34;input_text&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="s2">&#34;text&#34;</span><span class="o">:</span> <span class="s2">&#34;That&#39;s not bad, but the diagram is missing the bike shed.&#34;</span>
-</span></span><span class="line"><span class="cl">      <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="p">]</span>
-</span></span><span class="line"><span class="cl">  <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">]</span>
-</span></span></code></pre></td></tr></table></div>
-</div>
-</div><p>再次强调，由于是在延续对话，发送给 Responses API 的 <code>input</code> 长度会持续增加：</p>
-<p><img src="/pic/codex_agent_loop/20260126163311.png" alt="20260126163311"></p>
-<p>接下来探讨一下这个不断增长的提示对性能意味着什么。</p>
-<h3 id="性能考量"><a href="#性能考量" class="anchor-link" aria-label="性能考量"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:性能考量" class="headings">性能考量</a></h3>
-<p>你可能会问：&quot;等等，在整个对话过程中发送给 Responses API 的 JSON 数据量，难道不是按照 Agent Loop 的平方来增长的吗？&quot;</p>
-<p>完全没错。虽然 Responses API 确实支持可选的 <code>previous_response_id</code> 参数来缓解这个问题，但 Codex 目前并未使用它，主要是为了保持请求完全无状态，并支持零数据保留（ZDR）配置。</p>
-<blockquote>
-<p>避免使用 <code>previous_response_id</code> 简化了 Responses API 提供方的工作，因为它确保每个请求都是无状态的。这也使得支持选择零数据保留（ZDR）的客户变得简单，因为存储支持 <code>previous_response_id</code> 所需的数据与 ZDR 原则相悖。</p>
-<p>请注意，ZDR 客户不会牺牲从前几轮中获得专有推理信息的能力，因为相关的 <code>encrypted_content</code> 可以在服务器端解密。OpenAI 会保留 ZDR 客户的解密密钥，但不会保留数据。</p>
-</blockquote>
-<p>一般而言，模型采样成本远高于网络传输成本，因此采样环节是效率优化的重点目标。这正是提示缓存如此重要的原因——它能复用先前推理调用中的计算结果。当缓存命中时，模型采样复杂度会从二次方降至线性。</p>
-<p>关于提示缓存的文档对此有更详细的说明：</p>
-<blockquote>
-<p>缓存命中仅当提示内容出现完全匹配的前缀时才可能实现。为充分发挥缓存优势，请将静态内容（如指令说明和示例）置于提示开头，而将动态内容（如用户特定信息）放在末尾。这一原则同样适用于图像和工具调用——两次请求间必须保持完全相同的内容构成。</p>
-</blockquote>
-<p>哪些类型的操作可能导致 Codex 中发生“缓存未命中的情况”？</p>
-<ul>
-<li>在对话中途改变模型可用的 <code>tools</code></li>
-<li>更改作为 Responses API 请求目标的 <code>model</code> </li>
-<li>更改沙盒配置、审批模式或当前工作目录</li>
-</ul>
-<p>Codex 团队在引入可能影响提示缓存的新功能时必须格外谨慎。例如，最初对 MCP 工具的支持引入了一个错误，即未能以一致的顺序枚举工具⁠，从而导致缓存未命中。请注意，MCP 工具可能尤其棘手，因为 MCP 服务器可以通过 <code>notifications/tools/list_changed</code> ⁠ 动态更改它们提供的工具列表。在长对话中途遵循此通知可能导致昂贵的缓存未命中。</p>
-<p>在可能的情况下，通过向 <code>input</code> 追加一条新消息来反映配置变化，而不是修改之前的消息：</p>
-<ul>
-<li>如果沙盒配置或审批模式发生变化，就插入一条格式与原 <code>&lt;permissions instructions&gt;</code> 项相同的 <code>role=developer</code> 新消息</li>
-<li>如果当前工作目录发生变化，就插入一条格式与原 <code>&lt;environment_context&gt;</code> 相同的 <code>role=user</code> 新消息</li>
-</ul>
-<p>Codex 为了确保性能缓存命中而不遗余力。但还有一个必须管理的关键资源：<strong>上下文窗口</strong>。</p>
-<p>Codex 避免耗尽上下文窗口的一般策略是，一旦<strong>令牌数量超过某个阈值，就压缩对话内容</strong>。具体来说，Codex 将 <code>input</code> 替换为一个新的、更小的项目列表，这个列表代表了对话内容，使得 Agent 能够继续对话，同时了解迄今为止发生的情况。</p>
-<p>早期的压缩实现需要用户手动调用 <code>/compact</code> 命令，该命令会利用现有对话加上用于摘要的自定义指令来查询 Responses API。Codex 使用生成的结果助手消息（包含摘要）作为后续对话回合的新 <code>input</code> 。</p>
-<p>自那时起，Responses API 已演变为支持一个特殊的 <code>/responses/compact</code> 端点⁠，该端点能更高效地执行压缩。它会返回一个列表⁠，可用于替代先前的 <code>input</code> 以继续对话，同时释放上下文窗口的空间。此列表包含一个特殊的 <code>type=compaction</code> 物品，附带一个不透明的 <code>encrypted_content</code> 物品，用以保留模型对原始对话的潜在理解。现在，当 <code>auto_compact_limit</code> ⁠超过限制时，Codex 会自动使用该端点来压缩对话。</p>
-<blockquote>
-<p><a href="https://openai.com/index/unrolling-the-codex-agent-loop/" target="_blank" rel="noopener">https://openai.com/index/unrolling-the-codex-agent-loop/</a></p>
-</blockquote>
-
-            </div>
-
-            
-
-
-        </article>
-
-        
-
-        
-
-
-        
-
-
-        
-
-
-        
-
-
-        
-    
-        <div class="post-tags">
-            
-                
-                
-                
-                
-                    
-                    <a href="/tags/ai/" rel="tag" class="post-tags-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon tag-icon"><path d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"/></svg>AI</a>
-                
-            
-        </div>
-    
-
-
-
-        
-
-
-        
-
-
-        
-
-
-        
-
-
-    </div>
-</main>
-
-
-            
-    <div id="back-to-top" class="back-to-top">
-        <a href="#top" aria-label="回到顶部">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon arrow-up"><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg>
-        </a>
-    </div>
-
-
-            
-
-        </div>
-        
-
-        
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.0/dist/katex.min.css">
-<script>
-    if (typeof renderMathInElement === 'undefined') {
-        const getScript = (options) => {
-            const script = document.createElement('script');
-            script.defer = true;
-            script.crossOrigin = 'anonymous';
-            Object.keys(options).forEach((key) => {
-                script[key] = options[key];
-            });
-            document.body.appendChild(script);
-        };
-        getScript({
-            src: 'https:\/\/cdn.jsdelivr.net\/npm\/katex@0.13.0\/dist\/katex.min.js',
-            onload: () => {
-                getScript({
-                    src: 'https:\/\/cdn.jsdelivr.net\/npm\/katex@0.13.0\/dist\/contrib\/mhchem.min.js',
-                    onload: () => {
-                        getScript({
-                            src: 'https:\/\/cdn.jsdelivr.net\/npm\/katex@0.13.0\/dist\/contrib\/auto-render.min.js',
-                            onload: () => {
-                                renderKaTex();
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    } else {
-        renderKaTex();
-    }
-    function renderKaTex() {
-        renderMathInElement(
-            document.body,
-            {
-                delimiters: [
-                    {left: "$$", right: "$$", display: true},
-                    {left: "\\[", right: "\\]", display: true},
-                    {left: "$", right: "$", display: false},
-                    {left: "\\(", right: "\\)", display: false}
-                ]
-            }
-        );
-    }
-</script>
-
-
-
-
-    <script>
-    if (typeof MathJax === 'undefined') {
-        window.MathJax = {
-            loader: {
-                load: ['[tex]/mhchem']
-            },
-            
-            tex: {
-                inlineMath: {'[+]': [['$', '$']]},
-                tags: 'ams',
-                packages: {'[+]': ['mhchem']}
-            }
-        };
-        (function() {
-            const script = document.createElement('script');
-            script.src = 'https:\/\/cdn.jsdelivr.net\/npm\/mathjax@3.1.2\/es5\/tex-mml-chtml.js';
-            script.defer = true;
-            document.head.appendChild(script);
-        })();
-    } else {
-        MathJax.texReset();
-        MathJax.typeset();
-    }
-</script>
-
-
-
-
-
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@latest/dist/medium-zoom.min.js"></script>
-
-<script>
-    let imgNodes = document.querySelectorAll('div.post-body img');
-    imgNodes = Array.from(imgNodes).filter(node => node.parentNode.tagName !== "A");
-
-    mediumZoom(imgNodes, {
-        background: 'hsla(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l), 0.95)'
-    })
-</script>
-
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/instant.page@5.1.0/instantpage.min.js" type="module" defer></script>
-
-
-
-
-
-
-    </body>
-</html>
+</code></pre><p>Codex CLI 会向用户展示助手消息并聚焦到输入框，向用户示意轮到他们"继续对话"。如果用户作出回应，前一轮的助手消息和用户的新消息都必须追加到 Responses API 请求的 <code>input</code> 中，以开启新一轮对话：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=p>[</span>
+</span></span><span class=line><span class=cl>  <span class=cm>/* ... all items from the last Responses API request ... */</span>
+</span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;type&#34;</span><span class=o>:</span> <span class=s2>&#34;message&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;role&#34;</span><span class=o>:</span> <span class=s2>&#34;assistant&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;content&#34;</span><span class=o>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>      <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;type&#34;</span><span class=o>:</span> <span class=s2>&#34;output_text&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;text&#34;</span><span class=o>:</span> <span class=s2>&#34;I added a diagram to explain the client/server architecture.&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>]</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;type&#34;</span><span class=o>:</span> <span class=s2>&#34;message&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;role&#34;</span><span class=o>:</span> <span class=s2>&#34;user&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;content&#34;</span><span class=o>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>      <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;type&#34;</span><span class=o>:</span> <span class=s2>&#34;input_text&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;text&#34;</span><span class=o>:</span> <span class=s2>&#34;That&#39;s not bad, but the diagram is missing the bike shed.&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>]</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>]</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>再次强调，由于是在延续对话，发送给 Responses API 的 <code>input</code> 长度会持续增加：</p><p><img src=/pic/codex_agent_loop/20260126163311.png alt=20260126163311></p><p>接下来探讨一下这个不断增长的提示对性能意味着什么。</p><h3 id=性能考量><a href=#性能考量 class=anchor-link aria-label=性能考量><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href=#contents:性能考量 class=headings>性能考量</a></h3><p>你可能会问："等等，在整个对话过程中发送给 Responses API 的 JSON 数据量，难道不是按照 Agent Loop 的平方来增长的吗？"</p><p>完全没错。虽然 Responses API 确实支持可选的 <code>previous_response_id</code> 参数来缓解这个问题，但 Codex 目前并未使用它，主要是为了保持请求完全无状态，并支持零数据保留（ZDR）配置。</p><blockquote><p>避免使用 <code>previous_response_id</code> 简化了 Responses API 提供方的工作，因为它确保每个请求都是无状态的。这也使得支持选择零数据保留（ZDR）的客户变得简单，因为存储支持 <code>previous_response_id</code> 所需的数据与 ZDR 原则相悖。</p><p>请注意，ZDR 客户不会牺牲从前几轮中获得专有推理信息的能力，因为相关的 <code>encrypted_content</code> 可以在服务器端解密。OpenAI 会保留 ZDR 客户的解密密钥，但不会保留数据。</p></blockquote><p>一般而言，模型采样成本远高于网络传输成本，因此采样环节是效率优化的重点目标。这正是提示缓存如此重要的原因——它能复用先前推理调用中的计算结果。当缓存命中时，模型采样复杂度会从二次方降至线性。</p><p>关于提示缓存的文档对此有更详细的说明：</p><blockquote><p>缓存命中仅当提示内容出现完全匹配的前缀时才可能实现。为充分发挥缓存优势，请将静态内容（如指令说明和示例）置于提示开头，而将动态内容（如用户特定信息）放在末尾。这一原则同样适用于图像和工具调用——两次请求间必须保持完全相同的内容构成。</p></blockquote><p>哪些类型的操作可能导致 Codex 中发生“缓存未命中的情况”？</p><ul><li>在对话中途改变模型可用的 <code>tools</code></li><li>更改作为 Responses API 请求目标的 <code>model</code> </li><li>更改沙盒配置、审批模式或当前工作目录</li></ul><p>Codex 团队在引入可能影响提示缓存的新功能时必须格外谨慎。例如，最初对 MCP 工具的支持引入了一个错误，即未能以一致的顺序枚举工具⁠，从而导致缓存未命中。请注意，MCP 工具可能尤其棘手，因为 MCP 服务器可以通过 <code>notifications/tools/list_changed</code> ⁠ 动态更改它们提供的工具列表。在长对话中途遵循此通知可能导致昂贵的缓存未命中。</p><p>在可能的情况下，通过向 <code>input</code> 追加一条新消息来反映配置变化，而不是修改之前的消息：</p><ul><li>如果沙盒配置或审批模式发生变化，就插入一条格式与原 <code>&lt;permissions instructions></code> 项相同的 <code>role=developer</code> 新消息</li><li>如果当前工作目录发生变化，就插入一条格式与原 <code>&lt;environment_context></code> 相同的 <code>role=user</code> 新消息</li></ul><p>Codex 为了确保性能缓存命中而不遗余力。但还有一个必须管理的关键资源：<strong>上下文窗口</strong>。</p><p>Codex 避免耗尽上下文窗口的一般策略是，一旦<strong>令牌数量超过某个阈值，就压缩对话内容</strong>。具体来说，Codex 将 <code>input</code> 替换为一个新的、更小的项目列表，这个列表代表了对话内容，使得 Agent 能够继续对话，同时了解迄今为止发生的情况。</p><p>早期的压缩实现需要用户手动调用 <code>/compact</code> 命令，该命令会利用现有对话加上用于摘要的自定义指令来查询 Responses API。Codex 使用生成的结果助手消息（包含摘要）作为后续对话回合的新 <code>input</code> 。</p><p>自那时起，Responses API 已演变为支持一个特殊的 <code>/responses/compact</code> 端点⁠，该端点能更高效地执行压缩。它会返回一个列表⁠，可用于替代先前的 <code>input</code> 以继续对话，同时释放上下文窗口的空间。此列表包含一个特殊的 <code>type=compaction</code> 物品，附带一个不透明的 <code>encrypted_content</code> 物品，用以保留模型对原始对话的潜在理解。现在，当 <code>auto_compact_limit</code> ⁠超过限制时，Codex 会自动使用该端点来压缩对话。</p><blockquote><p><a href=https://openai.com/index/unrolling-the-codex-agent-loop/ target=_blank rel=noopener>https://openai.com/index/unrolling-the-codex-agent-loop/</a></p></blockquote></div></article><div class=post-tags><a href=/tags/ai/ rel=tag class=post-tags-link><svg viewBox="0 0 512 512" class="icon tag-icon"><path d="M0 252.118V48C0 21.49 21.49.0 48 0h204.118a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882.0L14.059 286.059A48 48 0 010 252.118zM112 64c-26.51.0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"/></svg>AI</a></div></div></main><div id=back-to-top class=back-to-top><a href=#top aria-label=回到顶部><svg viewBox="0 0 448 512" class="icon arrow-up"><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6.0-33.9L207 39c9.4-9.4 24.6-9.4 33.9.0l194.3 194.3c9.4 9.4 9.4 24.6.0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3.0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg></a></div></div><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.13.0/dist/katex.min.css><script>if(typeof renderMathInElement=="undefined"){const e=e=>{const t=document.createElement("script");t.defer=!0,t.crossOrigin="anonymous",Object.keys(e).forEach(n=>{t[n]=e[n]}),document.body.appendChild(t)};e({src:"https://cdn.jsdelivr.net/npm/katex@0.13.0/dist/katex.min.js",onload:()=>{e({src:"https://cdn.jsdelivr.net/npm/katex@0.13.0/dist/contrib/mhchem.min.js",onload:()=>{e({src:"https://cdn.jsdelivr.net/npm/katex@0.13.0/dist/contrib/auto-render.min.js",onload:()=>{renderKaTex()}})}})}})}else renderKaTex();function renderKaTex(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"\\[",right:"\\]",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1}]})}</script><script>typeof MathJax=="undefined"?(window.MathJax={loader:{load:["[tex]/mhchem"]},tex:{inlineMath:{"[+]":[["$","$"]]},tags:"ams",packages:{"[+]":["mhchem"]}}},function(){const e=document.createElement("script");e.src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js",e.defer=!0,document.head.appendChild(e)}()):(MathJax.texReset(),MathJax.typeset())</script><script src=https://cdn.jsdelivr.net/npm/medium-zoom@latest/dist/medium-zoom.min.js></script><script>let imgNodes=document.querySelectorAll("div.post-body img");imgNodes=Array.from(imgNodes).filter(e=>e.parentNode.tagName!=="A"),mediumZoom(imgNodes,{background:"hsla(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l), 0.95)"})</script><script src=https://cdn.jsdelivr.net/npm/instant.page@5.1.0/instantpage.min.js type=module defer></script></body></html>
